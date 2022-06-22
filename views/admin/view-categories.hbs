@@ -1,0 +1,49 @@
+{{>admin-side-top}}
+<section class="ml-5 mt-5 pl-5 pt-5" >
+        <div class="container ml-5 mt-4 ">
+          <div class="row mt-4">
+            <a href="/admin/add-category" class="btn btn-success mr-auto mb-4">Add
+              categories</a>
+          </div>
+
+          <table class="table  mt-5 ml-3 table-dark" id="my-table">
+            <thead>
+              <tr>
+               
+                <th scope="col">Category</th>
+                <th scope="col">status</th>
+                <th scope="col">Hide/Show</th>
+                 <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each categories}}
+                <tr>
+                 
+                  <td>{{this.Category}}</td>
+                  
+                    {{#if this.status}}
+                    <td>Visible</td>
+                    {{else}}
+                    <td>Hidden</td>
+                    {{/if}}
+                    <td>
+                    {{#if this.status}}
+                    <a onclick="hideCategory('{{this._id}}')" name="{{this.Category}}" class="btn btn-success ">Hide</a>
+                    </td>
+                    {{else}}
+                    <a onclick="showCategory('{{this._id}}')" name="{{this.Category}}" class="btn btn-danger ">Show</a>
+                    {{/if}}
+                    <td>
+                    <a onclick="deleteCategory('{{this._id}}')" name="{{this.Category}}" class="btn btn-danger "><i class="fa fa-trash"></i></a>
+                    </td>
+                  </td>
+
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+{{>admin-side-bottom}}

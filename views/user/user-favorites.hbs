@@ -1,0 +1,55 @@
+<section>
+  <div class="container">
+    <h1 style="text-align:center ;">Favorites....</h1>
+    <section class="popular-deals section bg-gray ml-2">
+      <div class="row ">
+        <!-- offer 01 -->
+        {{#each favpackages}}
+        {{#each this.favs}}
+
+        <div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-5 col-10 ml-4">
+          <!-- product card -->
+          <div class="product-item bg-light ml-4 ">
+            <div class="card " style="width:18rem;height:28rem;">
+              {{!-- height 36 rem --}}
+              <div class="thumb-content">
+
+
+                {{#if actualPrice}}
+                <div class="price" style="top: 39px;left: 13px;background:green">₹{{this.Price}}
+                </div>
+                <del class="price orginal-price">₹{{this.actualPrice}}</del>
+                {{else}}
+                <div class="price" style="top: 7px;left: 5px">₹{{this.Price}}</div>
+                {{/if}}
+
+                <a href="/./view-details/{{this._id}}">
+                  <img class="card-img-top img-fluid img-thumbnail" style="height: 15rem;"
+                    src="/package-images/{{this._id}}.jpg" alt="Card image cap" />
+                </a>
+              </div>
+              <div class="card-body">
+                <h4 class="card-title"><a href="#">{{this.Name}}</a></h4>
+                
+                <a class="fa fa-heart hearts-favs" href="/remove-favorite/{{this._id}}"></a>
+                <ul class="list-inline product-meta">
+                  <li class="list-inline-item">
+                    <a href="single.html"><i class="fa fa-folder-open-o"></i>{{this.Category}}</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a href="#"><i class="fa fa-calendar"></i>{{this.Date}}</a>
+                  </li>
+                </ul>
+                <p class="card-text">{{this.Description}}</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+        {{/each}}
+      </div>
+    </section>
+
+  </div>
+</section>

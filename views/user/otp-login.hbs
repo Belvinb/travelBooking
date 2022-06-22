@@ -1,0 +1,46 @@
+<section class="login py-5 border-top-1 common-bg-all">
+    <div class="container">
+        <div class="row justify-content-center pt-5">
+            <div class="col-lg-5 col-md-8 align-item-center">
+                <div class="border">
+                    <h3 class="bg-gray p-4"style="color:white ;">OTP Login</h3>
+                    <form action="./otpLogin" method="post" id="otp-login">
+                    {{#if numErr}}
+                        <p class="errorsub">{{numErr}}</p>
+                    {{/if}}
+                    {{#if blockErr}}
+                        <p class="errorsub">{{blockErr}}</p>
+                    {{/if}}
+                    
+                        
+                        <fieldset class="p-4">
+                            <label for="phone"style="color:white ;">Mobile Number</label>
+                            <input type="text" placeholder="Enter your mobile number"  name="mobileNo" id="customerMobile" class="border p-3 w-100 my-2" autocapitalize="off" autocorrect="off" minlength="4" maxlength="10" autofocus>
+                            
+                            <button type="submit" class="d-block py-3 px-5 bg-primary text-white border-0 rounded font-weight-bold mt-3">Send OTP</button>
+                            <a class="mt-3 d-block  text-primary" href="/user-login">Back to login</a>
+                            <a class="mt-3 d-inline-block text-primary" href="/user-signup">Register Now</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    jQuery('#otp-login').validate({
+        rules:{
+            mobileNo:{
+                required:true,
+                number:true,
+                minlength:10
+            }
+        },messages:{
+            mobileNo:{
+                required:'Please enter your Mobile Number',
+                number:'Entered value must be a number',
+                minlength:'Your phone number should be 10 digits long'
+            }
+        }
+    })
+</script>

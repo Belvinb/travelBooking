@@ -1,0 +1,121 @@
+{{>admin-side-top}}
+<div class="container">
+    <div class="main-body">
+
+
+        <div class="text-center mb-5">
+            <h3><strong>Report</strong> <small> <strong>{{data.start}}-{{data.end}}</strong></small></h3>
+        </div>
+        <div class="row ">
+            <div class="col-md-12">
+                <form action="/admin/salesreport" method="post">
+                    <div class="form-row ">
+                        <div class="form-group col-md-6">
+                            <label for="start">Starting Date</label>
+                            <input type="date" class="form-control" id="start" name="StartDate" required>
+                        </div>
+                        <div class="form-group col-md-6 ">
+                            <label for="end">Ending Date</label>
+                            <input type="date" class="form-control" id="end" name="EndDate" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-block btn-primary ">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap" id="sales">
+                            <h6 class="mb-0"><i class="lni lni-investment"></i> Total Sales</h6>
+                            <span class="text-secondary" id="totalSales">{{data.totalSales}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><i class="lni lni-shopping-basket"></i> Total Orders</h6>
+                            <span class="text-secondary">{{data.totalOrders}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><i class="lni lni-credit-cards"></i> Conformed Orders</h6>
+                            <span class="text-secondary">{{data.successOrders}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><i class="lni lni-warning"></i>Failed Order</h6>
+                            <span class="text-secondary">{{data.faildOrders}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><i class="lni lni-paypal"></i> Paypal Payment</h6>
+                            <span class="text-secondary">{{data.paypal}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><i class="lni lni-google-wallet"></i> Razorpay</h6>
+                            <span class="text-secondary">{{data.razorpay}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><i class="lni lni-wallet"></i> Cash On Delivery</h6>
+                            <span class="text-secondary">{{data.cod}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="row-12 mt-3">
+            <table id="example" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Date</th>
+                        <th scope="col">Travellers</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Status</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each data.allBookings}}
+                    <tr>
+                        <td>{{this.date}}</td>
+                        <td>{{this.address.name}}
+                        </td>
+                        <td>{{this.totalAmount}} <br>{{this.paymentMethod}} </td>
+                        <td>{{this.status}}</td>
+
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+{{>admin-side-bottom}}
+
+<style>
+    body {
+        color: #1a202c;
+        text-align: left;
+        background-color: #e2e8f0;
+    }
+</style>
+<script>
+  start.max = new Date().toISOString().split("T")[0];
+  end.max = new Date().toISOString().split("T")[0];
+
+  var sales = $('#totalSales').text()
+  console.log(sales)
+</script>

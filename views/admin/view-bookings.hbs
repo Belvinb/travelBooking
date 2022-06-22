@@ -1,0 +1,54 @@
+{{>admin-side-top}}
+<!-- Page Content  -->
+<section class="mt-3 ml-5">
+    <div class="container ">
+        <div class="table-responsive">
+            <table class="table mt-5 table-dark" id="my-table">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Package Name</th>
+                        <th scope="col">Travellers</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Number of Travellers</th>
+                        <th scope="col">Payment Method</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Options</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each bookings}}
+                    <tr>
+
+                        <td>{{this.packageName}}</td>
+                        <td>{{this.address.name}}</td>
+                        <td>{{this.totalAmount}}</td>
+                        <td>{{this.persons}}</td>
+                        <td>{{this.paymentMethod}}</td>
+                        <td>{{this.status}}</td>
+                        <td>
+                            {{#if this.cancel}}
+                            {{else}}
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="btn btn-primary dropdown-toggle"
+                                    data-toggle="dropdown">{{this.status}}</button>
+                                <div id="myDropdown" class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                        href="/admin/placedBooking?id={{this._id}}&name=placed">placed</a>
+                                    <a class="dropdown-item"
+                                        href="/admin/placedBooking?id={{this._id}}&name=cancelled">cancelled</a>
+                                    <a class="dropdown-item"
+                                        href="/admin/placedBooking?id={{this._id}}&name=completed">completed</a>
+                                </div>
+                            </div>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{{>admin-side-bottom}}

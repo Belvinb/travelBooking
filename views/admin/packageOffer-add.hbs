@@ -1,0 +1,70 @@
+{{>admin-side-top}}
+<section class="ml-5 mt-5">
+  <div class="container-fluid mt-4 ml-5">
+    <div class="add-product-top">
+      <div class="row">
+        <div class="col-md-10">
+          <h2 class="text-center add-product-headding">Add Product Offer</h2>
+          <form action="/admin/packageOffers-add" method="post" enctype="multipart/form-data" id="productPage">
+
+            <label for="">Packages</label><br>
+
+            <select class="selector" name="package">
+              <option value="">---select a Package---</option>
+              {{#each packages}}
+              <option value="{{this.Name}}">{{this.Name}}</option>
+              {{/each}}
+            </select><br>
+
+
+            <label for="">Starting Date</label>
+            <input type="date" name="startDate" class="form-control" id="startDate" style="border:1px solid black ;" /><br>
+            <label for="">Expiry Date</label>
+            <input type="date" name="endDate" class="form-control" id="endDate" style="border:1px solid black ;" /><br>
+            <label for="">Offer Percentage</label>
+            <input type="text" name="percentage" class="form-control" placeholder="Enter the offer Percentage" style="border:1px solid black ;" />
+            <button type="submit" class="btn-success mt-4 product-add-submit">Submit</button>
+            {{#if offerError}}
+            <p class="error">{{offerError}}</p>
+            {{/if}}
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $(document).ready(function () {
+    $('.selector').select2({
+    });
+  });
+</script>
+{{>admin-side-bottom}}
+
+
+<script>
+
+  startDate.min = new Date().toISOString().split("T")[0];
+  endDate.min = new Date().toISOString().split("T")[0];
+
+  jQuery('#productPage').validate({
+    rules: {
+      package: 'required',
+      startDate: 'required',
+      endDate: 'required',
+      percentage: {
+        required: true,
+        max: 100
+      }
+    }, messages: {
+      package: 'Please choose a package',
+      startDate: 'Please select the offer start date',
+      endDate: 'Please select the offer end date',
+      percentage: {
+        required: 'please enter the offer percentage',
+        max: 'Offer percentage exceeds 100%'
+      }
+    }
+  })
+</script>

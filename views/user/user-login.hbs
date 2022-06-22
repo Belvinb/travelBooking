@@ -1,0 +1,56 @@
+<section class="login py-5 border-top-1 common-bg-all ">
+    <div class="container">
+        <div class="row justify-content-center pt-5">
+            <div class="col-lg-5 col-md-8 align-item-center">
+                <div class="border">
+                    <h3 class="bg-gray p-4" style="color:white">Login Now</h3>
+                    <form action="./user-login" method="post" id="login-form">
+                    {{#if loginErr}}
+                        <p class="errorsub">{{loginErr}}</p>
+                    {{/if}}
+                    {{#if blockErr}}
+                        <p class="errorsub">{{blockErr}}</p>
+                    {{/if}}
+                    
+                        
+                        <fieldset class="p-4">
+                            <label for="email" style="color:white ;">Email</label>
+                            <input type="email" placeholder="Email"  name="Email" id="Email" class="border p-3 w-100 my-2">
+                            <br><label for="password" style="color: white;">Password</label>
+                            <input type="password" placeholder="Password" name="Password" id="Password" class="border p-3 w-100 my-2">
+                            <button type="submit" class="d-block py-3 px-5 bg-primary text-white border-0 rounded font-weight-bold mt-3">Log in</button>
+                            <a class="mt-3 d-block  text-primary" href="/otpLogin">login with otp</a>
+                            <a class="mt-3 d-inline-block text-primary" href="/user-signup">Register Now</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    jQuery('#login-form').validate({
+        rules:{
+            Email:{
+                required:true,
+                email:true
+                
+            },
+            Password:{
+                required:true,
+                minlength:6
+            }
+
+        },messages:{
+            Email:{
+                required:"please enter your email",
+                email:"please enter a proper email"
+            },
+            Password:{
+                required:"please enter your password",
+                minlength:"password must be atleast 6 characters long"
+            }
+
+        }
+    })
+</script>

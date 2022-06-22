@@ -1,0 +1,53 @@
+{{>admin-side-top}}
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="text-center">Edit user</h2>
+        <a href="/admin/view-user" class="d-grid btn btn-success col-2 ms-auto mb-5">view
+          Users</a>
+        <form
+          action="/admin/edit-user/{{user._id}}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <label for="">Name</label>
+          <input
+            type="text"
+            name="Name"
+            class="form-control"
+            value="{{user.Name}}"
+          />
+
+          <label for="">Email</label>
+          <input
+            type="text"
+            name="Email"
+            class="form-control"
+            value="{{user.Email}}"
+          />
+
+          {{!-- <label for="">Age</label>
+          <input
+            type="text"
+            name="Age"
+            class="form-control"
+            value="{{user.Age}}"
+          />
+
+          <label for="">Place</label>
+          <input
+            type="text"
+            name="Place"
+            class="form-control"
+            value="{{user.Place}}"
+          /> --}}
+
+          <button type="submit" class="btn btn-success mt-4">Submit</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{{>admin-side-bottom}}

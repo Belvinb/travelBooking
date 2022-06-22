@@ -1,0 +1,144 @@
+{{>admin-side-top}}
+<section class="ml-5 mt-5 pl-5">
+  <div class="container-fluid mt-4 ml-5 pl-5">
+    <div class="add-product-top ml-5 pl-5">
+      <div class="row">
+        <div class="col-md-10">
+          <h2 class="text-center add-product-headding">Add Banner</h2>
+          <form action="/admin/add-banners" method="post" enctype="multipart/form-data" id="bannerPage">
+            <label for="">Banner Name</label><br>
+            <input type="text" name="bannerTitle" class="form-control" placeholder="Enter the Banner Name" style="border:1px solid black ;" /><br>
+            <label for="">Main Title</label><br>
+            <input type="text" name="mainTitle" class="form-control" placeholder="Enter the main title" style="border:1px solid black ;" /><br>
+            <label for="">Sub Title</label><br>
+            <input type="text" name="subTitle" class="form-control" placeholder="Enter sub title" style="border:1px solid black ;" /><br>
+            <label for="">Category List</label><br>
+            <label for="">item 1</label>
+            <input type="text" name="list1" class="form-control" style="border:1px solid black ;" /><br>
+            <label for="">item 2</label>
+            <input type="text" name="list2" class="form-control" style="border:1px solid black ;" /><br>
+            <label for="">item 3</label>
+            <input type="text" name="list3" class="form-control" style="border:1px solid black ;" /><br>
+            <label for="">item 4</label>
+            <input type="text" name="list4" class="form-control" style="border:1px solid black ;" /><br>
+            <label for="">item 5</label>
+            <input type="text" name="list5" class="form-control" style="border:1px solid black ;" /><br>
+            <br><label for=""><strong>Banner Image</strong> </label>
+            <div>
+              <img id="imgView6" alt="" style="width:100px">
+
+              <input class="mr-6" type="file" id="id_image6" name="Image6" onchange="viewImage6(event)"><br>
+              <div class="vald-info" id="info6"></div>
+              <h5 class="error_form text-danger" id="image6_error_message"></h5>
+              <div id="image-box6" class="image-container col-lg-6"></div>
+              <br><button class="btn btn-danger" id="crop-btn6" style="margin-top:20px; display: none"
+                type="button">Crop</button>
+
+            </div>
+            <button type="submit" class="btn-success mt-4 product-add-submit">Submit</button>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{>admin-side-bottom}}
+
+
+<script>
+  
+
+  jQuery('#bannerPage').validate({
+    rules: {
+      bannerTitle:'required',
+      mainTitle:'required',
+      subTitle:'required',
+      list1: 'required',
+      list2: 'required',
+      list3: 'required',
+      list4: 'required',
+      list5: 'required',
+      Image6:'required'
+    }, messages: {
+      bannerTitle:'Please enter the banner name',
+      mainTitle: 'Please add the main title',
+      subTitle: 'Please add the sub title',
+      list1: 'Please add item 1',
+      list2: 'Please add item 2',
+      list3: 'Please add item 3',
+      list4: 'Please add item 4',
+      list5: 'Please add item 5',
+      Image6:'Please add the banner image'  
+    }
+  })
+  <!--image6-->
+  const imagebox6 = document.getElementById('image-box6')
+  const crop_btn6 = document.getElementById('crop-btn6')
+  const input6 = document.getElementById('id_image6')
+  function viewImage6(event) {
+
+    var fileInput = document.getElementById('id_image6');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+      fileInput.value = '';
+       Swal.fire("There is a problem!", "Please choose image file.");
+      return false;
+    } else {
+      document.getElementById('imgView6').src = URL.createObjectURL(event.target.files[0])
+    }
+
+  }
+
+  // When user uploads the image this event will get triggered
+  input6.addEventListener('change', () => {
+    // Getting image file object from the input variable
+    const img_data6 = input6.files[0]
+    // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+    // The new object URL represents the specified File object or Blob object.
+    const url6 = URL.createObjectURL(img_data6)
+    // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+    imagebox6.innerHTML = `<img src="${url6}" id="image6" style="width:100%;">`
+    // Storing that cropping view image in a variable
+    const image6 = document.getElementById('image6')
+
+    // Displaying the image box
+    document.getElementById('image-box6').style.display = 'block'
+    // Displaying the Crop buttton
+    document.getElementById('crop-btn6').style.display = 'block'
+    // Hiding the Post button
+    const cropper = new Cropper(image6, {
+      autoCropArea: 1,
+      viewMode: 1,
+      scalable: false,
+      zoomable: false,
+      movable: false,
+      minCropBoxWidth: 50,
+      minCropBoxHeight: 50,
+    })
+    // When crop button is clicked this event will get triggered
+    crop_btn6.addEventListener('click', () => {
+      // This method coverts the selected cropped image on the cropper canvas into a blob object
+      cropper.getCroppedCanvas().toBlob((blob) => {
+        // Gets the original image data
+        let fileInputElement6 = document.getElementById('id_image6');
+        // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+        let file6 = new File([blob], img_data6.name, { type: "image/*", lastModified: new Date().getTime() });
+        // Create a new container
+        let container6 = new DataTransfer();
+        // Add the cropped image file to the container
+        container6.items.add(file6);
+        // Replace the original image file with the new cropped image file
+        fileInputElement6.files = container6.files;
+        document.getElementById('imgView6').src = URL.createObjectURL(fileInputElement6.files[0])
+        // Hide the cropper box
+        document.getElementById('image-box6').style.display = 'none'
+        // Hide the crop button
+        document.getElementById('crop-btn6').style.display = 'none'
+      })
+    })
+  })
+
+</script>

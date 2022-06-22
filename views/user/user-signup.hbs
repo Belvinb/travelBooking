@@ -1,0 +1,66 @@
+<section class="login py-5 border-top-1 common-bg-all">
+        <div class="container">
+            <div class="row justify-content-center pt-5">
+                <div class="col-lg-5 col-md-8 align-item-center">
+                    <div class="border border">
+                        <h3 class="bg-gray p-4" style="color:white ;">Register Now</h3>
+                        <form action="/user-signup" method="post" id="user-signup">
+                        {{#if signupErr}}
+                                <p class="errorsub">{{signupErr}}</p>
+                        {{/if}}
+                            <fieldset class="p-4" >
+                                <label for="text"style="color:white ;" >Name</label>
+                                <input type="text" placeholder="Name*" name="Name" id="Name" class="border p-3 w-100 my-2">
+
+                                <br><label for="email" style="color:white ;">Email</label>
+                                <input type="email" placeholder="Email*" name="Email"  class="border p-3 w-100 my-2">
+
+                                <br><label for="number"style="color:white ;">Mobile</label>
+                                <input type="text" placeholder="Mobile number*"  name="Mobile" class="border p-3 w-100 my-2">
+
+                                <br><label for="password"style="color:white ;">Password</label>
+                                <input type="password" placeholder="Password*" name="Password" id="Password" class="border p-3 w-100 my-2">
+                                <button type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold">Register Now</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        jQuery('#user-signup').validate({
+            rules:{
+                Name:'required',
+                Email:{
+                    required:true,
+                    email:true
+                },
+                Mobile:{
+                    required:true,
+                    number:true,
+                    minlength:10,
+                },
+                Password:{
+                    required:true,
+                    minlength:6
+                }
+
+            },messages:{
+                Name:"Please enter your name",
+                Email:{
+                    required:"Please enter an email",
+                    email:"Please check your email format",
+                },
+                Mobile:{
+                    required:"Please enter a mobile number",
+                    number:"The entered value must be a number",
+                    minlength:"Your mobile number should be 10 digits long"
+                },
+                Password:{
+                    required:"Please enter a password",
+                    minlength:"The password must be atleast 6 characters long"
+                }
+            }
+        })
+    </script>

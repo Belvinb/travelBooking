@@ -1,0 +1,322 @@
+<section class="hero-area checkout-cls">
+    <div class="Click-here ml-5">Change Address</div>
+    <div class="custom-model-main">
+        <div class="custom-model-inner">
+            <div class="close-btn">×</div>
+            <div class="custom-model-wrap">
+                <div class="pop-up-content-wrap">
+                    <div class="row">
+                        {{#each address}}
+                        {{#if this.address}}
+                        {{#each this.address}}
+                        <div class="col-lg-6 col-md-6">
+                            <!-- Add address -->
+                            <div class="widget add-address mb-0">
+                                <a href="/delete-address/{{this._id}}" class="delete-address"><i
+                                        class="fa fa-trash"></i></a>
+                                <h3 class="widget-header user">Address</h3>
+                                <ul>
+                                    <li>{{this.Name}}</li>
+                                    <li>{{this.House}}(H)</li>
+                                    <li>{{this.Post}}(P.O)</li>
+                                    <li>{{this.Town}}</li>
+                                    <li>{{this.District}}</li>
+                                    <li>{{this.State}}</li>
+                                    <li>{{this.Pin}}</li>
+
+                                </ul>
+
+                                <button class="btn btn-primary "
+                                    onclick="autoFill('{{this.Name}}','{{this.House}}','{{this.Post}}','{{this.Town}}','{{this.District}}','{{this.State}}','{{this.Pin}}')">
+                                    Choose
+                                </button>
+                            </div>
+                        </div>
+                        {{/each}}
+                        {{else}}
+                        <h3>No address available </h3>
+                        <a href="/add-new-address" class="btn-sm btn-primary ml-2">Add address</a>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-overlay"></div>
+    </div>
+    <div class="container mt-5">
+        <form id="checkout-form">
+            <div class="row">
+                {{#each address}}
+                <div class="col-md-6 ml-5">
+                    <h2 style="color:white ;">Enter Your Address</h2><br>
+                    {{#if this.address}}
+                    {{#each this.address}}
+                    {{#if this.Status}}
+                    <div>
+
+                        <div id="newInput" style="color:white ;">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" style="color:white ;">House</label><br>
+                            <input type="text" id="house" name="house" value="{{this.House}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Post</label><br>
+                            <input type="text" id="post" name="post" value="{{this.Post}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Town/City</label><br>
+                            <input type="text" id="town" name="town" value="{{this.Town}}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" style="color:white ;">District</label><br>
+                            <input type="text" id="district" name="district" value="{{this.District}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">State</label><br>
+                            <input type="text" id="state" name="state" value="{{this.State}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Pin</label><br>
+                            <input type="text" id="pin" name="pin" value="{{this.Pin}}">
+                        </div>
+
+                    </div>
+                    {{/if}}
+                    {{/each}}
+                    {{else}}
+                    <div>
+                        <div id="newInput" style="color:white ;">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">House</label><br>
+                            <input type="text" id="house" name="house" value="{{this.House}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Post</label><br>
+                            <input type="text" id="post" name="post" value="{{this.Post}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Town/City</label><br>
+                            <input type="text" id="town" name="town" value="{{this.Town}}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" style="color:white ;">District</label><br>
+                            <input type="text" id="district" name="district" value="{{this.District}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">State</label><br>
+                            <input type="text" id="state" name="state" value="{{this.State}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Pin</label><br>
+                            <input type="text" id="pin" name="pin" value="{{this.Pin}}">
+                        </div>
+
+                    </div>
+                    {{/if}}
+
+
+                </div>
+                {{/each}}
+
+
+                <div class="col-md-4 ">
+                    <div class="widget price text-center">
+                        <div class=" container checkout">
+                            <h2>No of travellers</h2>
+                            <h3 id="travellerNumber" style="color:white ;">{{user.persons}}</h3>
+                            <h2>Total Amount</h2>
+                            <h3 id="total" style="color: white;">{{user.totalAmount}}</h3>
+                            <br>
+                            <h2>Select a coupon</h2>
+                            <select name="couponSelect" id="coupon" onchange="couponfunc()">
+                                <option value="">--select a coupon--</option>
+                                {{#user}}
+                                {{#each coupons}}
+                                <option name="couponSelect" id="couponOpt" value="{{this.couponPercentage}}"
+                                    extra-attr="{{this._id}}" title="coupon not available">{{this.couponCode}}</option>
+                                {{/each}}
+                                {{/user}}
+                            </select>
+
+                            <h2 id="rupees" style="color:#00ff14;"></h2>
+                            <h1 id="demo" name="payable" style="color:#00ff14;"></h1>
+                            <input type="text" value="" id="demo2" name="payable" hidden>
+
+                            <div class="payment" value="">
+                                <h2>Payment Method</h2>
+                                <label class="radio-inline" style="color:white ;">
+                                    <input type="radio" name="payment-method" value="RAZORPAY"> RazorPay
+                                </label><br>
+                                <label class="radio-inline mr-3 " style="color:white ;">
+                                    <input type="radio" name="payment-method" value="PAYPAL"> Paypal
+                                </label><br>
+                                <button class="btn btn-primary" type="submit">Checkout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="packageName" value="{{package.Name}}" hidden>
+                <input type="text" name="packageId" value="{{package._id}}" hidden>
+                <input type="text" name="userId" value="{{user._id}}" hidden>
+                <input type="text" id="totAmt" name="totalAmount" value="{{user.totalAmount}}" hidden>
+                <input type="text" id="couponId" name="couponId" value="" hidden>
+                <input type="text" name="persons" value="{{user.persons}}" hidden>
+                <input type="text" name="travelDate" value="{{user.travelDate}}" hidden>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#checkout-form").validate({
+            rules: {
+                house: {
+                    required: true
+                },
+                post: {
+                    required: true
+                },
+                town: {
+                    required: true
+                },
+                district: {
+                    required: true
+                },
+                state: {
+                    required: true
+                },
+                pin: {
+                    required: true,
+                    number: true
+                }
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url: '/checkout',
+                    method: 'post',
+                    data: $('#checkout-form').serialize(),
+                    success: (response) => {
+                        console.log(response)
+                        if (response.codSuccess) {
+                            location.href = '/ordersuccess'
+                        } else if (response.razorpay) {
+                            razorpayPayment(response)
+                        } else if (response) {
+                            location.href = response.url
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+
+        var options = {
+            "key": "rzp_test_oWdBPupObz1oBC", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Let's Go",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                {
+                    {{!-- {
+                        alert(response.razorpay_payment_id);
+                        alert(response.razorpay_order_id);
+                        alert(response.razorpay_signature)
+                    } --}}
+                }
+                verifyPayment(response, order)
+
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "8217823741"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+
+                    location.href = "/ordersuccess"
+                } else {
+                    location.href = "/cancel"
+                }
+            }
+        })
+    }
+
+</script>
+<script>
+    function couponfunc() {
+        var x = document.getElementById("coupon").value
+        console.log(x)
+        var y = document.getElementById("total").innerText
+        var code = $("#coupon").find("option:selected").attr('extra-attr');
+        console.log(code)
+        document.getElementById("demo").innerHTML = parseInt(y) - parseInt(y * (x / 100))
+        document.getElementById("rupees").innerHTML = 'Rs'
+        document.getElementById("totAmt").value = parseInt(y) - parseInt(y * (x / 100))
+        document.getElementById("couponId").value = code
+
+        $.ajax({
+            url: "/couponSelected",
+            data: { type: $("#coupon").val() },
+            method: "get"
+        })
+    }
+</script>
+<script>
+    function addInput() {
+        let travellerNumber = document.getElementById("travellerNumber").innerText
+        var container = document.getElementById("newInput")
+        for (i = 1; i <= travellerNumber; i++) {
+            container.appendChild(document.createTextNode("Traveller " + i));
+            container.appendChild(document.createElement('br'))
+            var input = document.createElement('input')
+            input.type = "text";
+            input.name = "name"
+            input.required = true
+            container.appendChild(input)
+            container.appendChild(document.createElement('br'))
+        }
+
+    }
+    document.onload = addInput()
+</script>

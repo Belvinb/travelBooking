@@ -1,0 +1,56 @@
+{{>admin-side-top}}
+<!-- Page Content  -->
+<section>
+  <div class="container">
+    <div class="row mb-3 mr-3">
+      <a href="/admin/add-packages" class="btn btn-success ml-auto">Add
+        packages</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table mt-5 table-dark" id="my-table">
+        <thead>
+          <tr>
+
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date</th>
+            <th scope="col">Price</th>
+            <th scope="col">Image</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each packages}}
+          <tr>
+
+            <td>{{this.Name}}</td>
+            <td>{{this.Category}}</td>
+            <td>{{this.Description}}</td>
+            <td>{{this.Date}}</td>
+            <td>&#x20b9 {{this.Price}}</td>
+            <td><img style="width:50px;height:50px" src="/package-images/{{this._id}}.jpg" alt="" /></td>
+            {{#if this.expired}}
+            <td>
+              <a href="/admin/edit-packages/{{this._id}}"><button class="btn btn-danger">renew</button></a>
+            </td>
+
+            {{else}}
+            <td>
+              <a href="/admin/edit-packages/{{this._id}}" class="btn btn-primary"><i class="fa fa-edit" </a>
+            </td>
+            {{/if}}
+            <td>
+              <a onclick="removePackage('{{this._id}}')" class="btn btn-danger "><i class="fa fa-trash"></i></a>
+            </td>
+
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{{>admin-side-bottom}}

@@ -1,0 +1,25 @@
+{{>admin-side-top}}
+<div class="container ml-5">
+    <div class="row pt-5 ml-5">
+        <div class="col-md-6 pt-5 ml-5">
+            <form action="/admin/add-category" method="post" id="add-category" >
+                <label for="category">Category Name</label><br>
+                <input type="text" name="Category">
+                <br><button type="submit" class="btn btn-primary mt-4">Add category</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery('#add-category').validate({
+        rules:{
+           Category:'required' 
+        },messages:{
+            Category:'Please enter a category name'
+        }
+    })
+</script>
+
+{{>admin-side-bottom}}

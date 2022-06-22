@@ -1,0 +1,73 @@
+<section>
+  <div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <nav class="navbar navbar-expand-lg navbar-light navigation nav-fixed" onscroll="scrollfunction()">
+            <a class="navbar-brand" href="/">
+              {{! <img src="images/logo.png" alt=""> }}
+              <h2 style="color:white">Let's Go </h2>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+              style="background-color: white;">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color:none">
+              <ul class="navbar-nav ml-auto main-nav">
+                <li class="nav-item active">
+                  <a class="nav-link navbar-color text-white" href="/">Home</a>
+                </li>
+                {{#if user}}
+                <li class="nav-item dropdown dropdown-slide">
+                  <a class="nav-link dropdown-toggle text-white" href="/user-favorites">
+                    Favorites <span class="badge badge-danger" id="fav-count"></span>
+                    <span></span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown dropdown-slide">
+                  <a class="nav-link dropdown-toggle text-white" href="/user-bookings">
+                    Bookings <span class="badge badge-danger" id="fav-count"></span>
+                    <span></span>
+                  </a>
+                </li>
+                {{/if}}
+              </ul>
+              {{#if user}}
+              <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color:none">
+                <ul class="navbar-nav ml-auto main-nav">
+                  <li class="nav-item dropdown dropdown-slide">
+                    <a class="nav-link dropdown-toggle text-white" href="" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">
+                      {{user.Name}}
+                      <span><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <!-- Dropdown list -->
+
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/my-profile">My profile</a>
+                      <a class="dropdown-item" href="/logout">logout</a>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+              {{else}}
+              <ul class="navbar-nav ml-auto mt-10">
+                <li class="nav-item">
+                  <a class="nav-link login-button text-white" href="/user-login">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link login-button text-white" href="/user-signup">Signup</a>
+                </li>
+              </ul>
+              {{/if}}
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,65 @@
+<section>
+    <div class="container ">
+        <div class="table-responsive">
+            <table class="table mt-5  table-hover table-dark " id="my-table">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Travellers</th>
+                        <th scope="col">Package Name</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Number of Travellers</th>
+                        <th scope="col">Payment Method</th>
+                        <th scope="col">Payment Status</th>
+                        <th scope="col">Cancel</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each bookings}}
+                    {{#if booked}}
+                    {{#each packageDetails}}
+
+                    <tr>
+                        <td>{{../address.name}}</td>
+                        <td>{{Name}}</td>
+                        <td>&#x20b9 {{../totalAmount}}</td>
+                        <td>{{../persons}}</td>
+                        <td>{{../paymentMethod}}</td>
+                        <td>{{../status}}</td>
+                        {{#if ../cancel}}
+                        <td>
+
+                        </td>
+                        <td>
+
+                            <a href="/bookedPkgDetails/{{this._id}}" class="btn btn-primary" style="left: 5rem;"><i
+                                    class="fa fa-eye"></i></a>
+                        </td>
+                        {{else}}
+                        <td>
+
+
+
+                            <a onclick="removeBooking('{{../this._id}}','{{../this.userId}}','{{../this.totalAmount}}','{{../this.paymentMethod}}','{{../this.status}}')"
+                                class="btn btn-danger "><i class="fa fa-trash"></i></a>
+
+                        </td>
+                        <td>
+
+                            <a href="/bookedPkgDetails/{{this._id}}" class="btn btn-primary"><i
+                                    class="fa fa-eye"></i></a>
+                        </td>
+                        {{/if}}
+
+                    </tr>
+                    {{/each}}
+                    {{else}}
+                    {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</section>

@@ -1,0 +1,48 @@
+<section class="login py-5 border-top-1 common-bg-all ">
+    {{>admin-header}}
+    <div class="container">
+        <div class="row justify-content-center pt-5">
+            <div class="col-lg-5 col-md-8 align-item-center">
+                <div class="border">
+                    <h3 class="bg-white p-4">Admin Login</h3>
+                    <form action="/admin/admin-login" method="post" id="admin-login">
+                    {{#if loginErr}}
+                        <p class="errorsub">{{loginErr}}</p>
+                    {{/if}}
+                        
+                        <fieldset class="p-4">
+                            <label for="email">Email</label>
+                            <input type="text" placeholder="Email"  name="Email" id="Email" class="border p-3 w-100 my-2">
+                            <br><label for="password">Password</label>
+                            <input type="password" placeholder="Password" name="Password" id="Password" class="border p-3 w-100 my-2">
+                            
+                            <button type="submit" class="d-block py-3 px-5 bg-primary text-white border-0 rounded font-weight-bold mt-3">Log in</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{>admin-footer}}
+</section>
+<script>
+    jQuery('#admin-login').validate({
+        rules:{
+            Email:{
+                required:true,
+                email:true
+            },
+            Password:{
+                required:true
+            }
+        },messages:{
+            Email:{
+                required:'Please enter your email',
+                email:'Please enter a valid email'
+            },
+            Password:{
+                required:'Please enter your password'
+            }
+        }
+    })
+</script>

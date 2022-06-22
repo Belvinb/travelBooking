@@ -1,0 +1,65 @@
+{{>admin-side-top}}
+<section class="ml-5 mt-5 pl-5">
+  <div class="container-fluid mt-4 ml-5 pl-5">
+    <div class="add-product-top ml-5 pl-5">
+      <div class="row">
+        <div class="col-md-10">
+          <h2 class="text-center add-product-headding">Add Coupon</h2>
+          <form action="/admin/add-coupons" method="post" enctype="multipart/form-data" id="couponPage">
+
+            <label for="">Coupon code</label><br>
+            <input type="text" name="couponCode" class="form-control" placeholder="Enter the coupon code" /><br>
+            <label for="">Starting Date</label>
+            <input type="date" name="couponStartDate" class="form-control" id="startDate" /><br>
+            <label for="">Expiry Date</label>
+            <input type="date" name="couponEndDate" class="form-control" id="endDate" /><br>
+
+
+
+            <label for="">Offer Percentage</label>
+            <input type="text" name="couponPercentage" class="form-control" placeholder="Enter the offer Percentage" />
+            <button type="submit" class="btn-success mt-4 product-add-submit">Submit</button>
+            {{#if offerError}}
+            <p class="error">{{offerError}}</p>
+            {{/if}}
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $(document).ready(function () {
+    $('.selector').select2({
+    });
+  });
+</script>
+{{>admin-side-bottom}}
+
+
+<script>
+
+  startDate.min = new Date().toISOString().split("T")[0];
+  endDate.min = new Date().toISOString().split("T")[0];
+
+  jQuery('#couponPage').validate({
+    rules: {
+      couponCode: 'required',
+      couponStartDate: 'required',
+      couponEndDate: 'required',
+      couponPercentage: {
+        required: true,
+        max: 100
+      }
+    }, messages: {
+      couponCode: 'Please enter a coupon code',
+      couponStartDate: 'Please select the offer start date',
+      couponEndDate: 'Please select the offer end date',
+      couponPercentage: {
+        required: 'please enter the offer percentage',
+        max: 'Offer percentage exceeds 100%'
+      }
+    }
+  })
+</script>

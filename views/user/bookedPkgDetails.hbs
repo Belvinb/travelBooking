@@ -1,0 +1,360 @@
+<section class="section" style="background-image: linear-gradient(to right, #0F2027 , #203A43,#2C5364);">
+  <h1 class="mb-3" style="text-align:center; color:white">Booking Detatils - {{package.Name}} </h1>
+  <!-- Container Start -->
+  <div class="container">
+    <div class="row">
+      <!-- Left sidebar -->
+      <div class="col-md-8">
+        <div class="product-details">
+          <h1 class="product-title text-white">{{package.Name}}</h1>
+          <div class="product-meta">
+            <ul class="list-inline">
+              <li class="list-inline-item text-white"><i class="fa fa-user-o"></i>
+                rating
+                <a class="text-white" href="">: *</a>
+              </li>
+              <li class="list-inline-item text-white"><i class="fa fa-list-alt"></i>
+                Category<a class="text-white" href="">:
+                  {{package.Category}}</a></li>
+              <li class="list-inline-item text-white"><i class="fa fa-calendar"></i>
+                Date<a class="text-white" href="">: {{package.Date}} </a></li>
+            </ul>
+          </div>
+
+
+
+          <div class="product-slider">
+            <div class="product-slider-item my-4 ">
+              <img class="img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}.jpg"
+                alt="product-img" onclick="openModal();currentSlide(1)">
+            </div>
+            <div class="product-slider-item my-4">
+              <img class="d-block img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}b.jpg"
+                alt="Second slide" onclick="openModal();currentSlide(2)">
+            </div>
+            <div class="product-slider-item my-4">
+              <img class="d-block img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}c.jpg"
+                alt="Third slide" onclick="openModal();currentSlide(3)">
+            </div>
+            <div class="product-slider-item my-4">
+              <img class="d-block img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}d.jpg"
+                alt="Third slide" onclick="openModal();currentSlide(4)">
+            </div>
+          </div>
+          <!-- The Modal/Lightbox -->
+          <div id="myModal" class="modalpic">
+            <span class="close cursor" onclick="closeModal()">&times;</span>
+            <div class="modalpic-content">
+
+              <div class="mySlidespic">
+                <div class="numbertext">1 / 4</div>
+                <img src="/package-images/{{package._id}}.jpg" style="width:100%;">
+              </div>
+
+              <div class="mySlidespic">
+                <div class="numbertext">2 / 4</div>
+                <img src="/package-images/{{package._id}}b.jpg" style="width:100%">
+              </div>
+
+              <div class="mySlidespic">
+                <div class="numbertext">3 / 4</div>
+                <img src="/package-images/{{package._id}}c.jpg" style="width:100%">
+              </div>
+
+              <div class="mySlidespic">
+                <div class="numbertext">4 / 4</div>
+                <img src="/package-images/{{package._id}}d.jpg" style="width:100%">
+              </div>
+
+              <!-- Next/previous controls -->
+              <a class="prev" onclick="plusSlides(-1)" style="color: red;">&#10094;</a>
+              <a class="next1" onclick="plusSlides(1)" style="color:red">&#10095;</a>
+
+              <!-- Caption text -->
+              <div class="captionpic-container">
+                <p id="caption"></p>
+              </div>
+
+              <!-- Thumbnail image controls -->
+              <div class="columnpic">
+                <img class="demopic" src="/package-images/{{package._id}}.jpg" style="width:150px;height:150px"
+                  onclick="currentSlide(1)" alt="Nature">
+              </div>
+
+              <div class="columnpic">
+                <img class="demopic" src="/package-images/{{package._id}}b.jpg" style="width:150px;height:150px"
+                  onclick="currentSlide(2)" alt="Snow">
+              </div>
+
+              <div class="columnpic">
+                <img class="demopic" src="/package-images/{{package._id}}c.jpg" style="width:150px;height:150px"
+                  onclick="currentSlide(3)" alt="Mountains">
+              </div>
+
+              <div class="columnpic">
+                <img class="demopic" src="/package-images/{{package._id}}d.jpg" style="width:150px;height:150px"
+                  onclick="currentSlide(4)" alt="Lights">
+              </div>
+            </div>
+          </div>
+
+          <div class="content ">
+            <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-itenary" role="tab"
+                  aria-controls="pills-home" aria-selected="true">Iternary</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-summary" role="tab"
+                  aria-controls="pills-profile" aria-selected="false">Summary</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                  aria-controls="pills-contact" aria-selected="false">Reviews</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <br>
+              <div class="tab-pane fade show active " id="pills-itenary" role="tabpanel"
+                aria-labelledby="pills-home-tab">
+                <h3 class="tab-title">Package Itinerary</h3>
+                <textarea name="itenary" id="" cols="30" rows="10" disabled>{{package.Itinerary}}</textarea>
+
+
+              </div>
+              <div class="tab-pane fade" id="pills-summary" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h3 class="tab-title">Package Summary</h3>
+                <textarea name="summary" id="" cols="30" rows="10" disabled>{{package.Summary}}</textarea>
+              </div>
+
+
+              <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                {{!-- <h3 class="tab-title">Product Review</h3> --}}
+                <div class="product-review">
+                  {{#if user}}
+                  <div class="review-submission">
+                    <h3 class="tab-title">Submit your review</h3>
+
+                    <div class="review-submit">
+                      <form class="row" method="post" action="/submit-review" enctype="multipart/form-data">
+                        <div class="col-lg-12">
+                          <fieldset class="starability-basic">
+                            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked
+                              aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="rating" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="rating" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="rating" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="rating" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="rating" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                          </fieldset>
+                        </div>
+                        <div class="col-lg-6">
+                          <label for="name">Title</label>
+                          <input type="text" name="title" id="title" class="form-control" placeholder="Review Title" />
+                        </div>
+                        <div class="col-lg-6">
+                          <label for="">Public name</label>
+                          <input type="text" name="name" id="name" class="form-control" value="{{user.Name}}"
+                            placeholder="Name" />
+                        </div>
+                        <div class="col-lg-6">
+                          <input type="email" name="email" id="email" class="form-control" value="{{user.Email}}"
+                            placeholder="Email" hidden />
+                        </div>
+                        <div class="col-12">
+                          <textarea name="review" id="review" rows="10" class="form-control"
+                            placeholder="Message"></textarea>
+                        </div>
+                        <br><label for="" class="ml-3"><strong>upload your image</strong> </label>
+                        <div>
+                          <br><img id="imgView7" alt="" style="width:100px">
+
+                          <br><input class="ml-5" type="file" id="id_image7" name="Image7"
+                            onchange="viewImage7(event)"><br>
+                          <div class="vald-info" id="info7"></div>
+                          <h5 class="error_form text-danger" id="image7_error_message"></h5>
+                          <div id="image-box7" class="image-container col-lg-6"></div>
+                          <br><button class="btn btn-danger" id="crop-btn7" style="margin-top:20px; display: none"
+                            type="button">Crop</button>
+
+                        </div>
+                        <input type="text" name="packageId" class="form-control" value="{{package._id}}" hidden>
+                        <div class="col-12">
+                          <button type="submit" class="btn btn-main">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+
+                  </div>
+                  {{else}}
+                  <h4 style="text-align: center;">Please Login to submit a review</h4>
+                  <h6 style="text-align:center"><a href="/user-login" style="color:blue ;">Login</a></h6>
+                  {{/if}}
+                  <hr>
+                  <h2>Customer Reviews</h2>
+                  <div style=" height:30rem;overflow-y: auto">
+                    {{#if reviews}}
+                    {{#each reviews}}
+                    <!-- The result is based on the 'data-rating' value. Change the value to see the different static rating. -->
+                    <br>
+                    <div class="reviews" style="background-color:white;border:3px groove grey">
+                      <h3 class="ml-1">{{this.title}}</h3>
+                      <h3 class="ml-1">{{this.name}}</h3>
+                      <p class="starability-result" data-rating="{{this.rating}}">
+                      </p>
+                      <p class="ml-1">{{this.review}}</p>
+                      <img src="/review-images/{{this._id}}.jpg" class="ml-1 mb-1" style="width:150px;">
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <h2 style="text-align:center ;">no reviews available</h2>
+                    {{/if}}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!-- Container End -->
+</section>
+
+
+<script type="text/javascript">
+
+  CKEDITOR.replace("itenary", {
+    toolbarCanCollapse: true, //Button to toggle toolbar (show/hide) 
+    toolbarStartupExpanded: false, //This will hide toolbar by default.
+
+  });
+
+  CKEDITOR.replace("summary", {
+    toolbarCanCollapse: true, //Button to toggle toolbar (show/hide) 
+    toolbarStartupExpanded: false, //This will hide toolbar by default.
+
+  });
+</script>
+
+<script>
+  // Open the Modal
+  function openModal() {
+    document.getElementById("myModal").style.display = "block";
+  }
+
+  // Close the Modal
+  function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+  }
+
+  var slideIndex = 1;
+  showSlides(slideIndex);
+
+  // Next/previous controls
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  // Thumbnail image controls
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlidespic");
+    var dots = document.getElementsByClassName("demopic");
+    var captionText = document.getElementById("caption");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+    captionText.innerHTML = dots[slideIndex - 1].alt;
+  }
+</script>
+
+<script>
+  //crop and image add image 7
+  const imagebox7 = document.getElementById('image-box7')
+  const crop_btn7 = document.getElementById('crop-btn7')
+  const input7 = document.getElementById('id_image7')
+  function viewImage7(event) {
+
+    var fileInput = document.getElementById('id_image7');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+      fileInput.value = '';
+      Swal.fire("There is a problem!", "Please choose image file.");
+      return false;
+    } else {
+      document.getElementById('imgView7').src = URL.createObjectURL(event.target.files[0])
+    }
+
+  }
+
+  // When user uploads the image this event will get triggered
+  input7.addEventListener('change', () => {
+    // Getting image file object from the input variable
+    const img_data7 = input7.files[0]
+    // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+    // The new object URL represents the specified File object or Blob object.
+    const url7 = URL.createObjectURL(img_data7)
+    // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+    imagebox7.innerHTML = `<img src="${url7}" id="image7" style="width:100%;">`
+    // Storing that cropping view image in a variable
+    const image7 = document.getElementById('image7')
+
+    // Displaying the image box
+    document.getElementById('image-box7').style.display = 'block'
+    // Displaying the Crop buttton
+    document.getElementById('crop-btn7').style.display = 'block'
+    // Hiding the Post button
+    const cropper = new Cropper(image7, {
+      autoCropArea: 1,
+      viewMode: 1,
+      scalable: false,
+      zoomable: false,
+      movable: false,
+      minCropBoxWidth: 50,
+      minCropBoxHeight: 50,
+    })
+    // When crop button is clicked this event will get triggered
+    crop_btn7.addEventListener('click', () => {
+      // This method coverts the selected cropped image on the cropper canvas into a blob object
+      cropper.getCroppedCanvas().toBlob((blob) => {
+        // Gets the original image data
+        let fileInputElement7 = document.getElementById('id_image7');
+        // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+        let file7 = new File([blob], img_data7.name, { type: "image/*", lastModified: new Date().getTime() });
+        // Create a new container
+        let container7 = new DataTransfer();
+        // Add the cropped image file to the container
+        container7.items.add(file7);
+        // Replace the original image file with the new cropped image file
+        fileInputElement7.files = container7.files;
+        document.getElementById('imgView7').src = URL.createObjectURL(fileInputElement7.files[0])
+        // Hide the cropper box
+        document.getElementById('image-box7').style.display = 'none'
+        // Hide the crop button
+        document.getElementById('crop-btn7').style.display = 'none'
+      })
+    })
+  })
+
+</script>

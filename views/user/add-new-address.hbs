@@ -1,0 +1,56 @@
+<section class="user-profile section">
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+      <!-- Add address -->
+      <div class="widget add-address mb-0">
+        <h3 class="widget-header user">Add Address</h3>
+        <form action="/add-new-address" id="addNewAddress" method="post">
+          <div class="form-group">
+            <label for="Name">Enter your Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" />
+          </div>
+          <div class="form-group">
+            <label for="house-name">House Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="houseName"
+              name="House"
+            />
+          </div>
+          <div class="form-group">
+            <label for="psot">Post</label>
+            <input type="text" class="form-control" id="post" name="Post" />
+          </div>
+          <div class="form-group">
+            <label for="townOrcity">Town/City</label>
+            <input type="text" class="form-control" id="townCity" name="Town" />
+          </div>
+          <div class="form-group">
+            <label for="district">District</label>
+            <input
+              type="text"
+              class="form-control"
+              id="district"
+              name="District"
+            />
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" class="form-control" id="state" name="State" />
+          </div>
+          <div class="form-group">
+            <label for="Pin code">PIN Code</label>
+            <input type="text" class="form-control" id="pinCode" name="Pin" />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="status" name="Status" value="true" hidden />
+          </div>
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-transparent">Add Address</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,272 @@
+<!--==================================
+=            User Profile            =
+===================================-->
+
+<section class="user-profile section">
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-10 offset-md-1 col-lg-3 offset-lg-0">
+				<div class="sidebar">
+					<!-- User Widget -->
+					<div class="widget user">
+						<!-- User Image -->
+						<div class="image d-flex justify-content-center">
+							<img src="/profile-images/{{user._id}}.jpg" alt="" class="">
+						</div>
+						<!-- User Name -->
+						<h5 class="text-center">{{user.Name}}</h5>
+					</div>
+					<!-- Dashboard Links -->
+					<div class="widget dashboard-links">
+						<ul>
+							<li><a class="my-1 d-inline-block" href="/user-bookings">Bookings</a></li>
+							<li><a class="my-1 d-inline-block" href="/user-favorites">favorites </a></li>
+							<li><a class="my-1 d-inline-block" href="/address">address</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-10 offset-md-1 col-lg-9 offset-lg-0">
+				<!-- Edit Profile Welcome Text -->
+				<div class="widget welcome-message">
+					<h2>Edit profile</h2>
+					<p>Edit your profile here</p>
+				</div>
+				<!-- Edit Personal Info -->
+				<div class="row">
+					<div class="col-lg-6 col-md-6 py-auto">
+						<div class="widget personal-info">
+							<h3 class="widget-header user">Edit Personal Information</h3>
+							<form action="/updateUserInfo/{{user._id}}" method="post" enctype="multipart/form-data"
+								id="user-details">
+								<!-- Name -->
+								<div class="form-group">
+									<label for="Name">Name</label>
+									<input type="text" class="form-control" id="Name" name="Name" value="{{user.Name}}">
+								</div>
+								<!-- Email -->
+								<div class="form-group">
+									<label for="Email">Email</label>
+									<input type="text" class="form-control" id="Email" name="Email"
+										value="{{user.Email}}">
+								</div>
+								<!-- Mobile-->
+								<div class="form-group">
+									<label for="Mobile">Mobile</label>
+									<input type="text" class="form-control" id="Mobile" name="Mobile"
+										value="{{user.Mobile}}">
+								</div>
+								<div>
+									<br><label for=""><strong>Profile Image</strong> </label>
+									<div>
+										<img id="imgView5" alt="" style="width:100px">
+
+										<input class="mr-5" type="file" id="id_image5" name="Image5"
+											onchange="viewImage5(event)"><br>
+										<div class="vald-info" id="info5"></div>
+										<h5 class="error_form text-danger" id="image5_error_message"></h5>
+										<div id="image-box5" class="image-container col-lg-6"></div>
+										<br><button class="btn btn-danger" id="crop-btn5"
+											style="margin-top:20px; display: none" type="button">Crop</button>
+
+									</div>
+								</div>
+								<!-- Submit button -->
+								<button type="submit" class="btn btn-transparent">Save My Changes</button>
+							</form>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<!-- Change Password -->
+						<div class="widget change-password">
+							<h3 class="widget-header user">Edit Password</h3>
+							<form action="/updateUserPwd/{{user._id}}" method="post" enctype="multipart/form-data"
+								id="user-pwd">
+								{{#if currentPwdErr}}
+								<p class="error">{{currentPwdErr}}</p>
+								{{/if}}
+								{{#if newPwdErr}}
+								<p class="error">{{newPwdErr}}</p>
+								{{/if}}
+
+								<!-- Current Password -->
+								<div class="form-group">
+									<label for="current-password">Current Password</label>
+									<input type="password" class="form-control" id="current-password" name="Current">
+								</div>
+								<!-- New Password -->
+								<div class="form-group">
+									<label for="new-password">New Password</label>
+									<input type="password" class="form-control" id="new-password" name="Password1">
+								</div>
+								<!-- Confirm New Password -->
+								<div class="form-group">
+									<label for="confirm-password">Confirm New Password</label>
+									<input type="password" class="form-control" id="confirm-password" name="Password2">
+								</div>
+								<!-- Submit Button -->
+								<button class="btn btn-transparent">Change Password</button>
+							</form>
+						</div>
+					</div>
+					{{#each address}}
+					<div class="col-lg-6 col-md-6">
+						<div class="widget add-address mb-0">
+							<h3 class="widget-header user">Default Address</h3>
+							{{#each this.address}}
+							{{#if this.Status}}
+							<ul>
+								<li>{{this.Name}}</li>
+								<li>{{this.House}}(H)</li>
+								<li>{{this.Post}}(P.O))</li>
+								<li>{{this.Town}}</li>
+								<li>{{this.District}}</li>
+								<li>{{this.State}}</li>
+								<li>{{this.Pin}}</li>
+
+							</ul>
+							{{/if}}
+							{{/each}}
+						</div>
+					</div>
+					{{/each}}
+					<div class="col-lg-6 col-md-6">
+						<!-- Add address -->
+						<div class="widget add-address mb-0">
+							<h3 class="widget-header user">Add Address</h3>
+
+
+							<!-- Submit Button -->
+							<a href="/add-new-address" class="btn btn-transparent">Add address</a>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+<script>
+	jQuery('#user-pwd').validate({
+		rules: {
+			Current: {
+				required: true
+			},
+			Password1: {
+				required: true,
+				minlength: 6
+			},
+			Password2: {
+				required: true,
+				minlength: 6
+			}
+		}, messages: {
+			Current: "Please enter your current password",
+			Password1: {
+				required: "please enter your new password",
+				minlength: "Password should be atleast 6 characters long"
+			},
+			Password2: {
+				required: "re-enter your password",
+				minlength: "Password should be atleast 6 characters long"
+			}
+		}
+	})
+
+	jQuery("#user-details").validate({
+		rules: {
+			Name: 'required',
+			Email: {
+				required: true,
+				email: true
+			},
+			Mobile: {
+				required: true,
+				minlength: 10
+			}
+
+		}, messages: {
+			Name: 'Please enter your name',
+			Email: {
+				required: 'Please enter your email',
+				email: 'Please check your email format'
+			},
+			Mobile: {
+				required: 'Please enter your mobile number',
+				minlength: "Your mobile number should be 10 digits long"
+			}
+		}
+	})
+
+
+		< !--image5-->
+  const imagebox5 = document.getElementById('image-box5')
+	const crop_btn5 = document.getElementById('crop-btn5')
+	const input5 = document.getElementById('id_image5')
+	function viewImage5(event) {
+
+		var fileInput = document.getElementById('id_image5');
+		var filePath = fileInput.value;
+		var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
+		if (!allowedExtensions.exec(filePath)) {
+			fileInput.value = '';
+			Swal.fire("There is a problem!", "Please choose image file.");
+			return false;
+		} else {
+			document.getElementById('imgView5').src = URL.createObjectURL(event.target.files[0])
+		}
+
+	}
+
+	// When user uploads the image this event will get triggered
+	input5.addEventListener('change', () => {
+		// Getting image file object from the input variable
+		const img_data5 = input5.files[0]
+		// createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+		// The new object URL represents the specified File object or Blob object.
+		const url5 = URL.createObjectURL(img_data5)
+		// Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+		imagebox5.innerHTML = `<img src="${url5}" id="image5" style="width:100%;">`
+		// Storing that cropping view image in a variable
+		const image5 = document.getElementById('image5')
+
+		// Displaying the image box
+		document.getElementById('image-box5').style.display = 'block'
+		// Displaying the Crop buttton
+		document.getElementById('crop-btn5').style.display = 'block'
+		// Hiding the Post button
+		const cropper = new Cropper(image5, {
+			autoCropArea: 1,
+			viewMode: 1,
+			scalable: false,
+			zoomable: false,
+			movable: false,
+			minCropBoxWidth: 50,
+			minCropBoxHeight: 50,
+		})
+		// When crop button is clicked this event will get triggered
+		crop_btn5.addEventListener('click', () => {
+			// This method coverts the selected cropped image on the cropper canvas into a blob object
+			cropper.getCroppedCanvas().toBlob((blob) => {
+				// Gets the original image data
+				let fileInputElement5 = document.getElementById('id_image5');
+				// Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+				let file5 = new File([blob], img_data5.name, { type: "image/*", lastModified: new Date().getTime() });
+				// Create a new container
+				let container5 = new DataTransfer();
+				// Add the cropped image file to the container
+				container5.items.add(file5);
+				// Replace the original image file with the new cropped image file
+				fileInputElement5.files = container5.files;
+				document.getElementById('imgView5').src = URL.createObjectURL(fileInputElement5.files[0])
+				// Hide the cropper box
+				document.getElementById('image-box5').style.display = 'none'
+				// Hide the crop button
+				document.getElementById('crop-btn5').style.display = 'none'
+			})
+		})
+	})
+
+</script>

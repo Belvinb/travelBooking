@@ -1,0 +1,219 @@
+{{>admin-side-top}}
+<div class="container mt-5">
+
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row  align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Revenue</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.totalSales}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa fa-inr fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Annual) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row  align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Users</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.totalUser}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Products
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{data.totalProducts}}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa fa-product-hunt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row  align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Total Orders</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.totalOrders}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-5 ml-2">
+
+        <!-- Area Chart -->
+        <div class="col-md-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header  align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue sources</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="earning"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-md-7 p-5" style="position: relative; height:40vh; width:80vw">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--line chart-->
+
+
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="ml-4">Customer Reviews</h2>
+            <div style=" width:65%; height:30rem;overflow-y: auto">
+                {{#if reviews}}
+                {{#each reviews}}
+                <!-- The result is based on the 'data-rating' value. Change the value to see the different static rating. -->
+                <br>
+                <div class="reviews mt-3 ml-2  py-auto"
+                    style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;;width:90%;">
+                    <h3 class="ml-1">{{this.title}}</h3>
+                    <h3 class="ml-1" style="font-size: 20px;">{{this.name}}</h3>
+                    <p class="starability-result" data-rating="{{this.rating}}">
+                    </p>
+                    <p class="ml-1" style="font-size:15px ;">{{this.review}}</p>
+                    <img src="/review-images/{{this._id}}.jpg" class="ml-1 mb-1" style="width:150px;">
+                </div>
+                {{/each}}
+                {{else}}
+                <h2 style="text-align:center ;">no reviews available</h2>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-10">
+            <h2 style="text-align:center;" class="mt-3 ml-2"> Recent Bookings</h2>
+            <table class="table table-hover table-dark mt-5 ml-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Package Name</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Payment Method</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each recent}}
+                    <tr>
+                        <td>{{this.packageName}}</td>
+                        <td>{{this.totalAmount}}</td>
+                        <td>{{this.paymentMethod}}</td>
+                        <td>{{this.status}}</td>
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table </div>
+        </div>
+    </div>
+</div>
+{{>admin-side-bottom}}
+
+<script type="text/javascript">
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total', 'Success', 'Pending'],
+            datasets: [{
+                data: [{{ data.totalOrders }}, {{ data.successOrders }},{{ data.pendingOrder }}],
+    backgroundColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(255, 0, 0, 1)',
+    ],
+        }]
+    },
+    options: {
+        responsive: false,
+    },
+    
+    });
+    var earning = document.getElementById('earning').getContext('2d');
+    var earning = new Chart(earning, {
+        type: 'pie',
+        data: {
+            labels: ['PAYPAL', 'RAZORPAY'],
+            datasets: [{
+                label: 'Order Status',
+                data: [{{ data.paypal }}, {{ data.razorpay }}],
+        backgroundColor: [
+            'rgba(255, 206, 86, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(60, 170, 70, 1)',
+        ],
+    }]
+    },
+    options: {
+        responsive: false,
+    }
+    });
+
+</script>

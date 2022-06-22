@@ -1,0 +1,41 @@
+{{>admin-side-top}}
+<section class="ml-5 mt-5 pl-5 pt-5" >
+    <div class="container ml-5 mt-4 ">
+        <table class="table mt-5 ml-3 table-dark table-hover" id="my-table">
+            <thead >
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Block/Unblock</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{this.Name}}</td>
+                    <td>{{this.Email}}</td>
+                    {{#if this.status}}
+                    <td>active</td>
+                    {{else}}
+                    <td>block</td>
+                    {{/if}}
+                    <td>
+                    {{#if this.status}}
+                    <a class="btn btn-danger" name="{{this.Name}}" onclick="return confirm('Are you sure you want to block {{this.Name}}?')" href="/admin/blockuser/{{this._id}}">Block</a>
+                    </td>
+                    {{else}}
+                    <a class="btn btn-success" name="{{this.Name}}" onclick="return confirm('Unblock this user {{this.Name}}?')" href="/admin/unblockuser/{{this._id}}">Unblock</a>
+                    {{/if}}
+
+                    <td>
+                        <a onclick="removeUser('{{this._id}}')" class="btn btn-danger "><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+{{>admin-side-bottom}}

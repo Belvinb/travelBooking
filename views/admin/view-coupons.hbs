@@ -1,0 +1,41 @@
+{{>admin-side-top}}
+<section class="ml-5 mt-5 pl-5 pt-5">
+  <div class="container ml-2">
+    <div class="row mt-4">
+      <a href="/admin/add-coupons" class="btn btn-success mr-auto mb-4">Add
+        coupons</a>
+    </div>
+
+    <table class="table mt-5 table-dark" id="my-table">
+      <thead>
+        <tr>
+
+          <th scope="col">Coupon</th>
+          <th scope="col">Coupon start date</th>
+          <th scope="col">Coupon end date</th>
+          <th scope="col">Offer percentage</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each coupons }}
+        <tr>
+
+          <td>{{this.couponCode}}</td>
+          <td>{{this.couponStartDate}}</td>
+          <td>{{this.couponEndDate}}</td>
+          <td>{{this.couponPercentage}}</td>
+          <td>
+            <a onclick="deleteCoupon('{{this._id}}')" name="{{this.couponCode}}" class="btn btn-danger "><i
+                class="fa fa-trash"></i></a>
+          </td>
+          </td>
+
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{{>admin-side-bottom}}
