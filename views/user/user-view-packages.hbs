@@ -6,7 +6,7 @@
   <section class="hero-area bg-1 text-center overlay">
     {{#each banner}}
     {{#if this.status}}
-    <img src="/banner-images/{{this._id}}.jpg" alt="" class="main-bg-img">
+    <img data-src="/banner-images/{{this._id}}.jpg" alt="" class="main-bg-img lazyload">
     {{/if}}
     {{/each}}
     <!-- Container Start -->
@@ -122,8 +122,8 @@
                     {{/if}}
 
                     <a href="/./view-details/{{this._id}}">
-                      <img class="card-img-top img-fluid img-thumbnail" style="height: 15rem;"
-                        src="/package-images/{{this._id}}.jpg" alt="Card image cap" />
+                      <img class="card-img-top img-fluid img-thumbnail lazyload" style="height: 15rem;"
+                        data-src="/package-images/{{this._id}}.jpg" alt="Card image cap" />
                     </a>
                   </div>
                   <div class="card-body">
