@@ -27,19 +27,19 @@
 
           <div class="product-slider">
             <div class="product-slider-item my-4 ">
-              <img class="img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}.jpg"
+              <img class="img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}.jpg"
                 alt="product-img" onclick="openModal();currentSlide(1)">
             </div>
             <div class="product-slider-item my-4">
-              <img class="d-block img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}b.jpg"
+              <img class="d-block img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}b.jpg"
                 alt="Second slide" onclick="openModal();currentSlide(2)">
             </div>
             <div class="product-slider-item my-4">
-              <img class="d-block img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}c.jpg"
+              <img class="d-block img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}c.jpg"
                 alt="Third slide" onclick="openModal();currentSlide(3)">
             </div>
             <div class="product-slider-item my-4">
-              <img class="d-block img-fluid w-100" style="height:25rem" src="/package-images/{{package._id}}d.jpg"
+              <img class="d-block img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}d.jpg"
                 alt="Third slide" onclick="openModal();currentSlide(4)">
             </div>
           </div>
@@ -50,22 +50,22 @@
 
               <div class="mySlidespic">
                 <div class="numbertext">1 / 4</div>
-                <img src="/package-images/{{package._id}}.jpg" style="width:100%;">
+                <img data-src="/package-images/{{package._id}}.jpg" class="lazyload" style="width:100%;">
               </div>
 
               <div class="mySlidespic">
                 <div class="numbertext">2 / 4</div>
-                <img src="/package-images/{{package._id}}b.jpg" style="width:100%">
+                <img data-src="/package-images/{{package._id}}b.jpg" class="lazyload" style="width:100%">
               </div>
 
               <div class="mySlidespic">
                 <div class="numbertext">3 / 4</div>
-                <img src="/package-images/{{package._id}}c.jpg" style="width:100%">
+                <img data-src="/package-images/{{package._id}}c.jpg" class="lazyload" style="width:100%">
               </div>
 
               <div class="mySlidespic">
                 <div class="numbertext">4 / 4</div>
-                <img src="/package-images/{{package._id}}d.jpg" style="width:100%">
+                <img data-src="/package-images/{{package._id}}d.jpg" class="lazyload" style="width:100%">
               </div>
 
               <!-- Next/previous controls -->
@@ -79,22 +79,22 @@
 
               <!-- Thumbnail image controls -->
               <div class="columnpic">
-                <img class="demopic" src="/package-images/{{package._id}}.jpg" style="width:150px;height:150px"
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}.jpg" style="width:150px;height:150px"
                   onclick="currentSlide(1)" alt="Nature">
               </div>
 
               <div class="columnpic">
-                <img class="demopic" src="/package-images/{{package._id}}b.jpg" style="width:150px;height:150px"
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}b.jpg" style="width:150px;height:150px"
                   onclick="currentSlide(2)" alt="Snow">
               </div>
 
               <div class="columnpic">
-                <img class="demopic" src="/package-images/{{package._id}}c.jpg" style="width:150px;height:150px"
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}c.jpg" style="width:150px;height:150px"
                   onclick="currentSlide(3)" alt="Mountains">
               </div>
 
               <div class="columnpic">
-                <img class="demopic" src="/package-images/{{package._id}}d.jpg" style="width:150px;height:150px"
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}d.jpg" style="width:150px;height:150px"
                   onclick="currentSlide(4)" alt="Lights">
               </div>
             </div>
@@ -239,7 +239,7 @@
                       <p class="starability-result" data-rating="{{this.rating}}">
                       </p>
                       <p class="ml-1">{{this.review}}</p>
-                      <img src="/review-images/{{this._id}}.jpg" class="ml-1 mb-1" style="width:150px;">
+                      <img data-src="/review-images/{{this._id}}.jpg" class="ml-1 mb-1 lazyload" style="width:150px;">
                     </div>
                     {{/each}}
                     {{else}}
