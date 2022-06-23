@@ -52,12 +52,12 @@ router.get('/', async function (req, res) {
 
 })
 // search result page
-router.get('/search', (req, res) => {
+router.get('/search', async(req, res) => {
   if (req.query.search) {
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    userHelpers.searchKey(regex).then((searchResult) => {
-      res.render('./user/searchResults', { admin: false, searchResult, user: req.session.user })
-    })
+    let searchResult = await userHelpers.searchKey(regex)
+    let banner = await packageHelpers.viewAllBanners()
+    res.render('./user/searchResults', { admin: false, searchResult, user: req.session.user,banner })
   }
   console.log(req.query.search);
 })
