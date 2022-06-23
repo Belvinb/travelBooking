@@ -75,7 +75,7 @@ module.exports = {
   checkExpiry:(dateToday)=>{
     return new Promise(async(resolve,reject)=>{
       let currentDate = moment(dateToday).format("YYYY-MM-DD")
-      db.get().collection(collection.PACKAGE_COLLECTION).update({expiryDate:{$lt:currentDate}},
+      db.get().collection(collection.PACKAGE_COLLECTION).updateMany({expiryDate:{$lt:currentDate}},
         {
           $set:{expired:true}
         },
