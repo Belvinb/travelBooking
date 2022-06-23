@@ -55,9 +55,10 @@
 
               <div class="mySlidespic">
                 <div class="numbertext">2 / 4</div>
-                <img data-src="/package-images/{{package._id}}b.jpg" class="lazyload" style="width:100%">
-              </div>
 
+                <img data-src="/package-images/{{package._id}}b.jpg" class="lazyload" style="width:100%">
+
+              </div>
               <div class="mySlidespic">
                 <div class="numbertext">3 / 4</div>
                 <img data-src="/package-images/{{package._id}}c.jpg" class="lazyload" style="width:100%">
@@ -267,10 +268,10 @@
                 style="width:200px;border:1px solid white;color:white"><br>
               <p style="color: black;font-size:25px">Travellers Details</p>
               <h4>Adults</h4><input type="number" style="width:40px" id="Adults" name="Adults" oninput="adultValue()"
-                value="1" min="1">
+                value="1" min="1" max="5">
               <h4 class="mt-2">Kids</h4>
               <h6>(age < 12 yrs)</h6><input type="number" style="width:40px" id="Kids" name="Kids" oninput="kidValue()"
-                    value="0" min="0">
+                    value="0" min="0" max="5">
                   <p class="mt-2" style="color: black;">Total Price</p>
                   <p id="totalPrice">{{package.Price}}</p>
                   <br><button type="submit" class="btn btn-primary mt-2">Submit</button>
