@@ -87,7 +87,7 @@
 
         <!-- Area Chart -->
         <div class="col-md-5">
-            <div class="card shadow mb-4">
+            <div class="card shadow mb-4" style="height: 344px">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header  align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Revenue sources</h6>
@@ -95,14 +95,14 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="earning"></canvas>
+                        <canvas id="earning" style="height: 266px;width:283px;margin-left:37px"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Pie Chart -->
-        <div class="col-md-7 p-5" style="position: relative; height:40vh; width:80vw">
+        <div class="col-md-7 p-5" style="position: relative;top:-47px">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 align-items-center justify-content-between">
@@ -110,46 +110,49 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-pie">
-                        <canvas id="myChart"></canvas>
+                    <div class="chart-pie" style="height: 245px;">
+                        <canvas id="myChart" style="height: 193px;width:350px"></canvas>
                     </div>
                 </div>
             </div>
         </div>
         <!--line chart-->
-
-
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-12">
-            <h2 class="ml-4">Customer Reviews</h2>
-            <div style=" width:65%; height:30rem;overflow-y: auto">
+        <div class="col-md-5">
+            <h2 class="ml-5">Customer Reviews</h2>
+            <div class="card">
+
+            <div style=" width:110%; height:22rem;overflow-y: auto">
                 {{#if reviews}}
                 {{#each reviews}}
                 <!-- The result is based on the 'data-rating' value. Change the value to see the different static rating. -->
                 <br>
-                <div class="reviews mt-3 ml-2  py-auto"
+                
+
+                <div class="reviews mt-3 ml-2 review-toggle"
                     style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;;width:90%;">
                     <h3 class="ml-1">{{this.title}}</h3>
                     <h3 class="ml-1" style="font-size: 20px;">{{this.name}}</h3>
-                    <p class="starability-result" data-rating="{{this.rating}}">
-                    </p>
-                    <p class="ml-1" style="font-size:15px ;">{{this.review}}</p>
+                    <p class="starability-result" data-rating="{{this.rating}}"></p>
+                    <p class="ml-1 read-comment" style="font-size:15px ;">{{this.review}}</p>
+                    <button class="mb-3 " onclick="readMore(this)">Read More</button><br>
                     <img src="/review-images/{{this._id}}.jpg" class="ml-1 mb-1" style="width:150px;">
                 </div>
+                
                 {{/each}}
                 {{else}}
                 <h2 style="text-align:center ;">no reviews available</h2>
                 {{/if}}
             </div>
+            </div>
         </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-10">
-            <h2 style="text-align:center;" class="mt-3 ml-2"> Recent Bookings</h2>
-            <table class="table table-hover table-dark mt-5 ml-5">
+    
+        <div class="col-md-6">
+            <h2 style="text-align:center;" class="ml-4"> Recent Bookings</h2>
+            
+            <table class="table table-hover table-dark ml-5 ">
                 <thead>
                     <tr>
                         <th scope="col">Package Name</th>
@@ -200,10 +203,10 @@
     var earning = new Chart(earning, {
         type: 'pie',
         data: {
-            labels: ['PAYPAL', 'RAZORPAY'],
+            labels: ['RAZORPAY', 'PAYPAL'],
             datasets: [{
                 label: 'Order Status',
-                data: [{{ data.paypal }}, {{ data.razorpay }}],
+                data: [{{ data.razorpay }}, {{ data.paypal }}],
         backgroundColor: [
             'rgba(255, 206, 86, 1)',
             'rgba(54, 162, 235, 1)',
@@ -216,4 +219,26 @@
     }
     });
 
+</script>
+<script>
+  let noOfChar = 100;
+  let contents = document.querySelectorAll(".read-comment")
+  
+  Array.from(contents).forEach(content =>{
+    //checking if comment is greater than no of char
+    if(content.textContent.length < noOfChar){
+      content.nextElementSibling.style.display = "none";
+    }else{
+      let displayText = content.textContent.slice(0,noOfChar);
+      let moreText =content.textContent.slice(noOfChar)
+      content.innerHTML = `${displayText}<span class="dots">...</span><span class="hide 
+      more">${moreText}</span>`
+    }
+  });
+  function readMore(btn){
+    let post = btn.parentElement;
+    post.querySelector(".dots").classList.toggle("hide");
+    post.querySelector(".more").classList.toggle("hide");
+    btn.textContent == "Read More" ? btn.textContent = "Read Less" : btn.textContent = "Read More"
+  }
 </script>
