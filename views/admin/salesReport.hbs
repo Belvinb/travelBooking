@@ -12,7 +12,8 @@
                     <div class="form-row ">
                         <div class="form-group col-md-6">
                             <label for="start">Starting Date</label>
-                            <input type="date" class="form-control" id="start" name="StartDate" required>
+                            <input type="date" class="form-control" id="start" onchange="startSelect()" name="StartDate"
+                                required>
                         </div>
                         <div class="form-group col-md-6 ">
                             <label for="end">Ending Date</label>
@@ -30,7 +31,8 @@
             <div class="col-md-4 mb-3">
                 <div class="card mt-3">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap" id="sales">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
+                            id="sales">
                             <h6 class="mb-0"><i class="lni lni-investment"></i> Total Sales</h6>
                             <span class="text-secondary" id="totalSales">{{data.totalSales}}</span>
                         </li>
@@ -58,6 +60,7 @@
                             <h6 class="mb-0"><i class="lni lni-wallet"></i> Cash On Delivery</h6>
                             <span class="text-secondary">{{data.cod}}</span>
                         </li>
+                        <p id="btn-test"></p>
                     </ul>
                 </div>
             </div>
@@ -113,9 +116,28 @@
     }
 </style>
 <script>
-  start.max = new Date().toISOString().split("T")[0];
-  end.max = new Date().toISOString().split("T")[0];
+    start.max = new Date().toISOString().split("T")[0];
+    end.max = new Date().toISOString().split("T")[0];
 
-  var sales = $('#totalSales').text()
-  console.log(sales)
+    var sales = $('#totalSales').text()
+
+</script>
+
+<script>
+    function startSelect() {
+        var StartDate = document.getElementById('start').value;
+        var sDate = new Date(StartDate);
+        end.min = sDate.toISOString().split("T")[0];
+    }
+</script>
+<script>
+    function dwnToggle() {
+        var sales = $('#totalSales').text()
+        if (sales == 0) {
+            let buttons = document.getElementsByClassName('dt-buttons')
+            buttons.classList.toggle(".button-hide")
+        }
+
+    }
+    document.onload = dwnToggle()
 </script>

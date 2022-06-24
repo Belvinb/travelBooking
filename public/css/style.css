@@ -3579,6 +3579,13 @@ img.hover-shadow {
 .hide{
   display: none;
 }
+.dt-buttons{
+  display: block;
+}
+.button-hide{
+  display: none;
+}
+
 
 
 
