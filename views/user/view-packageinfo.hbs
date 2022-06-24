@@ -31,16 +31,17 @@
                 alt="product-img" onclick="openModal();currentSlide(1)">
             </div>
             <div class="product-slider-item my-4">
-              <img class="d-block img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}b.jpg"
-                alt="Second slide" onclick="openModal();currentSlide(2)">
+              <img class="d-block img-fluid w-100 lazyload" style="height:25rem"
+                data-src="/package-images/{{package._id}}b.jpg" alt="Second slide"
+                onclick="openModal();currentSlide(2)">
             </div>
             <div class="product-slider-item my-4">
-              <img class="d-block img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}c.jpg"
-                alt="Third slide" onclick="openModal();currentSlide(3)">
+              <img class="d-block img-fluid w-100 lazyload" style="height:25rem"
+                data-src="/package-images/{{package._id}}c.jpg" alt="Third slide" onclick="openModal();currentSlide(3)">
             </div>
             <div class="product-slider-item my-4">
-              <img class="d-block img-fluid w-100 lazyload" style="height:25rem" data-src="/package-images/{{package._id}}d.jpg"
-                alt="Third slide" onclick="openModal();currentSlide(4)">
+              <img class="d-block img-fluid w-100 lazyload" style="height:25rem"
+                data-src="/package-images/{{package._id}}d.jpg" alt="Third slide" onclick="openModal();currentSlide(4)">
             </div>
           </div>
           <!-- The Modal/Lightbox -->
@@ -80,23 +81,23 @@
 
               <!-- Thumbnail image controls -->
               <div class="columnpic">
-                <img class="demopic lazyload" data-src="/package-images/{{package._id}}.jpg" style="width:150px;height:150px"
-                  onclick="currentSlide(1)" alt="Nature">
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}.jpg"
+                  style="width:150px;height:150px" onclick="currentSlide(1)" alt="Nature">
               </div>
 
               <div class="columnpic">
-                <img class="demopic lazyload" data-src="/package-images/{{package._id}}b.jpg" style="width:150px;height:150px"
-                  onclick="currentSlide(2)" alt="Snow">
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}b.jpg"
+                  style="width:150px;height:150px" onclick="currentSlide(2)" alt="Snow">
               </div>
 
               <div class="columnpic">
-                <img class="demopic lazyload" data-src="/package-images/{{package._id}}c.jpg" style="width:150px;height:150px"
-                  onclick="currentSlide(3)" alt="Mountains">
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}c.jpg"
+                  style="width:150px;height:150px" onclick="currentSlide(3)" alt="Mountains">
               </div>
 
               <div class="columnpic">
-                <img class="demopic lazyload" data-src="/package-images/{{package._id}}d.jpg" style="width:150px;height:150px"
-                  onclick="currentSlide(4)" alt="Lights">
+                <img class="demopic lazyload" data-src="/package-images/{{package._id}}d.jpg"
+                  style="width:150px;height:150px" onclick="currentSlide(4)" alt="Lights">
               </div>
             </div>
           </div>
@@ -234,12 +235,14 @@
                     {{#each reviews}}
                     <!-- The result is based on the 'data-rating' value. Change the value to see the different static rating. -->
                     <br>
-                    <div class="reviews mt-3 ml-2 " style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;;width:90%">
+                    <div class="reviews mt-3 ml-2 review-toggle"
+                      style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;;width:90%">
                       <h3 class="ml-1">{{this.title}}</h3>
                       <h3 class="ml-1">{{this.name}}</h3>
                       <p class="starability-result" data-rating="{{this.rating}}">
                       </p>
-                      <p class="ml-1">{{this.review}}</p>
+                      <p class="ml-1 read-comment">{{this.review}}</p>
+                      <button class="mb-3 " onclick="readMore(this)">Read More</button><br>
                       <img data-src="/review-images/{{this._id}}.jpg" class="ml-1 mb-1 lazyload" style="width:150px;">
                     </div>
                     {{/each}}
@@ -426,4 +429,26 @@
     })
   })
 
+</script>
+<script>
+  let noOfChar = 150;
+  let contents = document.querySelectorAll(".read-comment")
+  
+  Array.from(contents).forEach(content =>{
+    //checking if comment is greater than no of char
+    if(content.textContent.length < noOfChar){
+      content.nextElementSibling.style.display = "none";
+    }else{
+      let displayText = content.textContent.slice(0,noOfChar);
+      let moreText =content.textContent.slice(noOfChar)
+      content.innerHTML = `${displayText}<span class="dots">...</span><span class="hide 
+      more">${moreText}</span>`
+    }
+  });
+  function readMore(btn){
+    let post = btn.parentElement;
+    post.querySelector(".dots").classList.toggle("hide");
+    post.querySelector(".more").classList.toggle("hide");
+    btn.textContent == "Read More" ? btn.textContent = "Read Less" : btn.textContent = "Read More"
+  }
 </script>

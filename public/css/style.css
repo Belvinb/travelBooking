@@ -3567,4 +3567,18 @@ img.hover-shadow {
 }
 
 
+/* review read more */
+.review-toggle button{
+  padding: 5px;
+  background-color: #ff0268;
+  color: #ffffff;
+  border: none;
+  cursor:pointer
+
+}
+.hide{
+  display: none;
+}
+
+
 
