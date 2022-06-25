@@ -114,11 +114,11 @@
                 <div class="card" style="width:350px;height:28rem;">
                   {{!-- height 36 rem --}}
                   <div class="thumb-content">
-                    {{#if actualPrice}}
+                    {{#if offerExpired}}
+                    <div class="price" style="top: 7px;left: 5px">₹{{this.Price}}</div>
+                    {{else if actualPrice}}
                     <div class="price" style="top: 39px;left: 13px;background:green">₹{{this.Price}}</div>
                     <del class="price orginal-price">₹{{this.actualPrice}}</del>
-                    {{else if offerExpired}}
-                    <div class="price" style="top: 7px;left: 5px">₹{{this.Price}}</div>
                     {{else}}
                     <div class="price" style="top: 7px;left: 5px">₹{{this.Price}}</div>
 
