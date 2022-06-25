@@ -130,14 +130,3 @@
         end.min = sDate.toISOString().split("T")[0];
     }
 </script>
-<script>
-    function dwnToggle() {
-        var sales = $('#totalSales').text()
-        if (sales == 0) {
-            let buttons = document.getElementsByClassName('dt-buttons')
-            buttons.classList.toggle(".button-hide")
-        }
-
-    }
-    document.onload = dwnToggle()
-</script>

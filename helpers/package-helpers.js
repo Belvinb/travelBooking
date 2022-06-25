@@ -495,13 +495,11 @@ module.exports = {
         .updateOne(
           { Name: proname },
           {
-            $set: {
-              Price: Package?.actualPrice,
-            },
             $unset: {
               actualPrice: "",
               offer: "",
               percentage: "",
+              offerExpired:""
             },
           }
         )
@@ -527,7 +525,7 @@ module.exports = {
           let package = await db
             .get()
             .collection(collection.PACKAGE_COLLECTION)
-            .findOne({ Name: onedata.package, offer: { $exists: false } });
+            .findOne({ Name: onedata.package, offer: { $exists: false },offerExpired:{$exists:false} });
           if (package) {
             let actualPrice = package.Price;
             let newP = (package.Price * onedata.percentage) / 100;
@@ -557,6 +555,54 @@ module.exports = {
       }
     });
   },
+  endPackageOffer: (todayDate) => {
+    let proendDate = moment(todayDate).format("YYYY/MM/DD");
+    return new Promise(async (res, rej) => {
+      let data = await db
+        .get()
+        .collection(collection.OFFERS_COLLECTION)
+        .find({ endDate: { $lt: proendDate } })
+        .toArray();
+      if (data) {
+        await data.map(async (onedata) => {
+          let package = await db
+            .get()
+            .collection(collection.PACKAGE_COLLECTION)
+            .findOne({ Name: onedata.package, offer: { $exists: true } });
+          if (package) {
+            // let actualPrice = package.Price;
+            // let newP = (package.Price * onedata.percentage) / 100;
+            // let newPrice = actualPrice - newP;
+
+            // newPrice = newPrice.toFixed();
+            db.get()
+              .collection(collection.PACKAGE_COLLECTION)
+              .updateOne(
+                { _id: objectId(package._id) },
+                {
+                  $set: {
+                    Price: package?.actualPrice,
+                    offerExpired :true
+                    
+                  },
+                  $unset:{
+                    actualPrice: "",
+                    offer: "",
+                    percentage: "",
+                  }
+                }
+              );
+            res();
+          } else {
+            res();
+          }
+        });
+      } else {
+        res();
+      }
+    });
+  },
+
   getAllcoupons: (userId) => {
     return new Promise(async(resolve, reject) => {
       let coupons = await db.get().collection(collection.COUPONS_COLLECTION).find().toArray()

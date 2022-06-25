@@ -47,6 +47,7 @@ router.get('/', async function (req, res) {
   let banner = await packageHelpers.viewAllBanners()
   packageHelpers.startPackageOffer(today)
   packageHelpers.checkExpiry(today)
+  packageHelpers.endPackageOffer(today)
 
   res.render('./user/user-view-packages', { admin: false, packages, categories, user, favCount,banner })
 

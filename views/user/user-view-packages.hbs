@@ -117,8 +117,11 @@
                     {{#if actualPrice}}
                     <div class="price" style="top: 39px;left: 13px;background:green">₹{{this.Price}}</div>
                     <del class="price orginal-price">₹{{this.actualPrice}}</del>
+                    {{else if offerExpired}}
+                    <div class="price" style="top: 7px;left: 5px">₹{{this.Price}}</div>
                     {{else}}
                     <div class="price" style="top: 7px;left: 5px">₹{{this.Price}}</div>
+
                     {{/if}}
 
                     <a href="/./view-details/{{this._id}}">
