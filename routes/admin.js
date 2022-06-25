@@ -135,6 +135,13 @@ router.post("/edit-packages/:id", (req, res) => {
     }
   });
 });
+
+router.get("/expired-packages",verifyAdmin,(req,res)=>{
+  packageHelpers.getAllPackages().then((packages)=>{
+
+    res.render("admin/expired-packages",{admin:true,packages})
+  })
+})
 //package management end
 
 

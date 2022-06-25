@@ -1,14 +1,15 @@
 {{>admin-side-top}}
 <!-- Page Content  -->
-<section  >
-  <h2 style="text-align:center;font-weight:bold">Package Details</h2>
-  <div class="container">
-    <div class="row mb-3 mr-3" >
+<section class=" mt-5">
+    
+  <div class="container mt-2">
+     <h2 style="text-align:center;font-weight:bold" class="mt-4">Expired Packages</h2>
+    <div class="row mb-3 mr-3">
       <a href="/admin/add-packages" class="btn btn-success ml-auto">Add
         packages</a>
     </div>
     <div class="table-responsive">
-      <table class="table mt-5 table-dark" id="my-table" >
+      <table class="table mt-5 table-dark" id="my-table">
         <thead>
           <tr>
 
@@ -25,7 +26,6 @@
         <tbody>
           {{#each packages}}
           {{#if this.expired}}
-          {{else}}
           <tr>
 
             <td>{{this.Name}}</td>
