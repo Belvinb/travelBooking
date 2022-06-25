@@ -494,21 +494,22 @@ module.exports = {
         .collection(collection.PACKAGE_COLLECTION)
         .updateOne(
           { Name: proname },
-          {
-            $unset: {
-              actualPrice: "",
-              offer: "",
-              percentage: "",
-              offerExpired:""
-            },
-          }
+            {
+              $set:{
+                Price : Package?.actualPrice
+              },
+              $unset: {
+                actualPrice: "",
+                offer: "",
+                percentage: "",
+                offerExpired:""
+              },
+            }  
+    
         )
         .then(() => {
           resolve();
         })
-        .catch((err) => {
-          res(err);
-        });
     });
   },
 
@@ -586,7 +587,6 @@ module.exports = {
                     
                   },
                   $unset:{
-                    actualPrice: "",
                     offer: "",
                     percentage: "",
                   }
