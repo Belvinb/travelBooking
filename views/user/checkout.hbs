@@ -48,17 +48,18 @@
         <form id="checkout-form">
             <div class="row">
                 {{#each address}}
-                <div class="col-md-6 ml-5">
+                <div class="col-md-4">
                     <h2 style="color:white ;">Enter Your Address</h2><br>
                     {{#if this.address}}
                     {{#each this.address}}
                     {{#if this.Status}}
                     <div>
-
-                        <div id="newInput" style="color:white ;">
-
+                        
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Traveller 1</label><br>
+                            <input type="text" id="name" name="name" value="{{this.Name}}">
                         </div>
-
+                        <div id="newInput" style="color:white;margin-left : 8rem"></div>
                         <div class="form-group">
                             <label for="" style="color:white ;">House</label><br>
                             <input type="text" id="house" name="house" value="{{this.House}}">
@@ -90,6 +91,10 @@
                     {{/each}}
                     {{else}}
                     <div>
+                        <div class="form-group">
+                            <label for="" style="color:white ;">Traveller 1</label><br>
+                            <input type="text" id="name" name="name" value="{{this.Name}}">
+                        </div>
                         <div id="newInput" style="color:white ;">
 
                         </div>
@@ -124,6 +129,10 @@
 
 
                 </div>
+                <div class="col-md-4">
+                    <div id="newInput" style="color:white;margin-left : 8rem"></div>
+                </div>
+            
                 {{/each}}
 
 
@@ -306,7 +315,11 @@
     function addInput() {
         let travellerNumber = document.getElementById("travellerNumber").innerText
         var container = document.getElementById("newInput")
-        for (i = 1; i <= travellerNumber; i++) {
+        if(travellerNumber == 1){
+
+        }else{
+
+        for (i = 2; i <= travellerNumber; i++) {
             container.appendChild(document.createTextNode("Traveller " + i));
             container.appendChild(document.createElement('br'))
             var input = document.createElement('input')
@@ -315,6 +328,7 @@
             input.required = true
             container.appendChild(input)
             container.appendChild(document.createElement('br'))
+        }
         }
 
     }
