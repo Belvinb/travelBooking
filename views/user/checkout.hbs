@@ -147,11 +147,11 @@
                                 {{#user}}
                                 {{#each coupons}}
                                 <option name="couponSelect" id="couponOpt" value="{{this.couponPercentage}}"
-                                    extra-attr="{{this._id}}" title="coupon not available">{{this.couponCode}}</option>
+                                    extra-attr="{{this.couponCode}}" min-attr="{{this.minAmount}}"  title="coupon not available">{{this.couponCode}}</option>
                                 {{/each}}
                                 {{/user}}
                             </select>
-
+                            <p id="noOffer" style="color: red; font-size:15px"></p>
                             <h2 id="rupees" style="color:#00ff14;"></h2>
                             <h1 id="demo" name="payable" style="color:#00ff14;"></h1>
                             <input type="text" value="" id="demo2" name="payable" hidden>
@@ -176,7 +176,7 @@
                 <input type="text" name="packageId" value="{{package._id}}" hidden>
                 <input type="text" name="userId" value="{{user._id}}" hidden>
                 <input type="text" id="totAmt" name="totalAmount" value="{{user.totalAmount}}" hidden>
-                <input type="text" id="couponId" name="couponId" value="" hidden>
+                <input type="text" id="couponName" name="couponName" value="" hidden>
                 <input type="text" name="persons" value="{{user.persons}}" hidden>
                 <input type="text" name="travelDate" value="{{user.travelDate}}" hidden>
             </div>
@@ -296,16 +296,29 @@
         var y = document.getElementById("total").innerText
         var code = $("#coupon").find("option:selected").attr('extra-attr');
         console.log(code)
+        var minAmount = $("#coupon").find("option:selected").attr('min-attr');
+        
+        if(y < minAmount){
+            var offervalid = minAmount - y
+            document.getElementById("demo").innerHTML = ""
+            document.getElementById("rupees").innerHTML = ""
+            document.getElementById("totAmt").value = y
+            document.getElementById("couponName").value = ''
+            document.getElementById("noOffer").innerHTML = `please add ${offervalid} rs more to avail this offer`
+        }else{
+        
         document.getElementById("demo").innerHTML = parseInt(y) - parseInt(y * (x / 100))
         document.getElementById("rupees").innerHTML = 'Rs'
         document.getElementById("totAmt").value = parseInt(y) - parseInt(y * (x / 100))
-        document.getElementById("couponId").value = code
+        document.getElementById("couponName").value = code
+        document.getElementById("noOffer").innerHTML = ""
 
         $.ajax({
             url: "/couponSelected",
             data: { type: $("#coupon").val() },
             method: "get"
         })
+        }
     }
 </script>
 <script>

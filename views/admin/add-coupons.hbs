@@ -14,9 +14,8 @@
             <input type="date" name="couponStartDate" class="form-control" id="startDate" /><br>
             <label for="">Expiry Date</label>
             <input type="date" name="couponEndDate" class="form-control" id="endDate" /><br>
-
-
-
+            <label for="">Minimum Amount</label>
+            <input type="text" name="minAmount" class="form-control" placeholder="Enter min amount to avail this offer" />
             <label for="">Offer Percentage</label>
             <input type="text" name="couponPercentage" class="form-control" placeholder="Enter the offer Percentage" />
             <button type="submit" class="btn-success mt-4 product-add-submit">Submit</button>
@@ -49,6 +48,10 @@
       couponCode: 'required',
       couponStartDate: 'required',
       couponEndDate: 'required',
+      minAmount:{
+        required:true,
+        number : true
+      },
       couponPercentage: {
         required: true,
         max: 100
@@ -57,6 +60,10 @@
       couponCode: 'Please enter a coupon code',
       couponStartDate: 'Please select the offer start date',
       couponEndDate: 'Please select the offer end date',
+      minAmount:{
+        required:'Please enter a min value to avail this offer',
+        number:'The entered value must be a number'
+      },
       couponPercentage: {
         required: 'please enter the offer percentage',
         max: 'Offer percentage exceeds 100%'

@@ -363,6 +363,7 @@ module.exports = {
 
     },
     placeBooking: (order) => {
+        console.log(order,'order test')
         return new Promise((resolve, reject) => {
             let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
             let dat = moment(new Date()).format('YYYY/MM/DD')
@@ -384,7 +385,7 @@ module.exports = {
                 totalAmount: order.totalAmount,
                 couponSelected : order.couponSelect,
                 payableAmount : order.payable,
-                couponId : order.couponId,
+                couponName : order.couponName,
                 persons: order.persons,
                 status: status,
                 travelDate: order.travelDate,
@@ -453,17 +454,19 @@ module.exports = {
             let order = await db.get().collection(collection.BOOKING_COLLECTION).findOne({_id:objectId(orderId)})
             resolve(order)
             if(order){
-                let couponId = order.couponId
+                let couponName = order.couponName
                 
-                db.get().collection(collection.USER_COLLECTION).updateOne({_id:objectId(userId)},
-                {
-                    $pull:{
-                        'coupons': {'_id':couponId}
+
+                    db.get().collection(collection.USER_COLLECTION).updateOne({_id:objectId(userId)},
+                    {
+                        $pull:{
+                            'coupons': {'couponCode':couponName}
+                        }
                     }
-                }
-                ).then(()=>{
-                    resolve()
-                })
+                    ).then(()=>{
+                        resolve()
+                    })
+                
 
             }   
         })
