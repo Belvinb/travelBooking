@@ -3410,6 +3410,7 @@ tabs own */
   margin-top: -1px;
 }
 
+/* order success page */
 .orderSucess-cls {
   background: url("../images/ordersucess/travel-concept-with-baggage.jpg");
   background-size: cover;
@@ -3417,7 +3418,7 @@ tabs own */
   background-position: center center;
   height: 600px;
 }
-
+/*order failure page*/
 .orderfailure-cls {
   background: url("../images/orderfailure/alert-concept-illustration_114360-388.webp");
   background-size: 50%;
@@ -3426,21 +3427,16 @@ tabs own */
   height: 650px;
 }
 
+/* checkout page */
 .checkout-cls {
-  /* background: url("../images/checkout/travel-by-car-road-trip-time-travel-tourism-summer-holiday-flat-design-illustration_126895-572.webp"); */
-  /* background-image: linear-gradient(to right,#00bf8f,#001510);; */
   background-image: linear-gradient(to right,#606c88,#3f4c6b);;
-
-  /* background-repeat: no-repeat;
-  background-position: 412px;
-  background-attachment: fixed;
-  background-size: 24%; */
 }
 
+/* error  */
 .error {
   color: red
 }
-
+/* validation error */
 .errorsub {
   font-size: 16px;
   color: red;

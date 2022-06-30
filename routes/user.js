@@ -25,7 +25,7 @@ paypal.configure({
   'client_secret': process.env.PAYPAL_CLIENT_SECRET
 });
 
-
+//middleware to check if the user is logged in or not
 const verifyLogin = (req, res, next) => {
   if (req.session.userloggedIn) {
     next()
@@ -232,7 +232,9 @@ router.get("/view-details/:id",verifyLogin, async (req, res) => {
 
   res.render("user/view-packageinfo", { admin: false, package, user: req.session.user,reviews,booked });
 });
-//booked package details
+
+// booked package details
+
 router.get("/bookedPkgDetails/:id", verifyLogin, async (req, res) => {
   let packageId = req.params.id;
   let package = await packageHelpers.getPackageDetails(packageId)

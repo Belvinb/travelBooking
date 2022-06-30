@@ -5,6 +5,7 @@ var packageHelpers = require("../helpers/package-helpers");
 var adminHelpers = require("../helpers/admin-helpers");
 var userHelpers = require("../helpers/user-helpers");
 const { response } = require("express");
+//middleware to check if the admin is logged is in or not
 const verifyAdmin = (req, res, next) => {
   if (req.session.adminloggedIn) {
     next();
@@ -135,7 +136,7 @@ router.post("/edit-packages/:id", (req, res) => {
     }
   });
 });
-
+//view all expired packages
 router.get("/expired-packages",verifyAdmin,(req,res)=>{
   packageHelpers.getAllPackages().then((packages)=>{
 
@@ -151,12 +152,12 @@ router.get("/view-banners",verifyAdmin,(req,res)=>{
     res.render("admin/view-banners",{admin:true,banners})
   })
 })
-//banners get
+//view all banners details
 router.get("/add-banners",verifyAdmin,(req,res)=>{
   res.render("admin/add-banners",{admin:true})
 })
 
-//banners post
+//add banner details to database
 router.post("/add-banners",verifyAdmin,(req,res)=>{
   let bannerDetails = req.body
   packageHelpers.addBanners(bannerDetails).then((response)=>{
@@ -170,7 +171,7 @@ router.post("/add-banners",verifyAdmin,(req,res)=>{
   })
 })
 
-//disable banner get
+//disable banner 
 router.get("/disableBanner/:id",verifyAdmin,(req,res)=>{
   let bannerId = req.params.id
   packageHelpers.disableBanner(bannerId).then((response)=>{
@@ -197,6 +198,7 @@ router.get("/activateBanner/:id",verifyAdmin,(req,res)=>{
 
 
 //category management start
+//view all categories
 router.get("/view-category", verifyAdmin, (req, res) => {
   packageHelpers.getCategories().then((categories) => {
     res.render("admin/view-categories", { admin: true, categories });
@@ -242,6 +244,7 @@ router.get("/showcategory/:id", verifyAdmin, (req, res) => {
 //catergory management end
 
 //user management start
+//view all users
 router.get("/view-user", verifyAdmin, function (req, res) {
   userHelpers.getAllUsers().then((users) => {
     res.render("admin/view-user", { users, admin: true });

@@ -241,14 +241,6 @@ function scrollfunction() {
   })
 }
 
-/*!     
-        jquery.picZoomer.js
-        v 1.0
-        David
-        http://www.CodingSerf.com' 
-*/
-
-//放大镜控件
 ; (function ($) {
   $.fn.picZoomer = function (options) {
     var opts = $.extend({}, $.fn.picZoomer.defaults, options),
@@ -266,13 +258,12 @@ function scrollfunction() {
     opts.zoomHeight = opts.zoomHeight || opts.picHeight;
     var zoomWPSizeHalf = { w: opts.zoomWidth / 2, h: opts.zoomHeight / 2 };
 
-    //初始化zoom容器大小
     $zoomWP.css({ 'width': opts.zoomWidth + 'px', 'height': opts.zoomHeight + 'px' });
     $zoomWP.css(opts.zoomerPosition || { top: 0, left: opts.picWidth + 30 + 'px' });
-    //初始化zoom图片大小
+
     $zoomPic.css({ 'width': opts.picWidth * opts.scale + 'px', 'height': opts.picHeight * opts.scale + 'px' });
 
-    //初始化事件
+    
     $picBD.on('mouseenter', function (event) {
       $cursor.show();
       $zoomWP.show();
@@ -358,6 +349,9 @@ $(document).ready(function () {
     $(_this).siblings('input#number').val(value);
   }
 });
+
+
+//add package to favorites
 function addToFavs(packageId) {
   $.ajax({
     url: '/add-to-favorites/' + packageId,
@@ -403,6 +397,8 @@ function decrement() {
     document.getElementById('number').value = value;
   }
 }
+
+
 //address reveal
 $(".Click-here").on('click', function () {
   $(".custom-model-main").addClass('model-open');
@@ -411,7 +407,7 @@ $(".close-btn, .bg-overlay").click(function () {
   $(".custom-model-main").removeClass('model-open');
 });
 
-//choose address
+//choose address and autofill
 function autoFill(name, house, post, town, district, state, pin) {
   const Toast = Swal.mixin({
     toast: true,
@@ -436,10 +432,9 @@ function autoFill(name, house, post, town, district, state, pin) {
   document.getElementById('district').value = district
   document.getElementById('state').value = state
   document.getElementById('pin').value = pin
-
-
 };
 
+//cancel a booking from user side
 function removeBooking(orderId, userId, total, paymentMethod, status) {
   console.log("calleddd");
   Swal.fire({
@@ -474,6 +469,7 @@ function removeBooking(orderId, userId, total, paymentMethod, status) {
   )
 }
 
+//view booked package details
 function viewBookedDetails(bookingId,packageId,userId){
   $.ajax({
     url:'bookedPkgDetails'+packageId,
@@ -483,10 +479,10 @@ function viewBookedDetails(bookingId,packageId,userId){
     },
     method:'get'
   })
-
-
 }
 
+
+//remove a package -admin side
 function removePackage(packageId) {
   Swal.fire({
     title: 'Are you sure?',
@@ -520,6 +516,7 @@ function removePackage(packageId) {
   })
 }
 
+//delete a user 
 function removeUser(userId){
   Swal.fire({
     title: 'Are you sure?',
@@ -548,6 +545,8 @@ function removeUser(userId){
   })
 }
 
+
+//hide a category -admin side
 function hideCategory(categoryId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -575,6 +574,7 @@ function hideCategory(categoryId){
   })
 }
 
+//show a hidden category
 function showCategory(categoryId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -602,6 +602,7 @@ function showCategory(categoryId){
   })
 }
 
+//delete a catergory -admin side
 function deleteCategory(categoryId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -629,6 +630,7 @@ function deleteCategory(categoryId){
   })
 }
 
+//disable a banner - disabled banners will not be shown at users side
 function disbleBanner(bannerId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -657,6 +659,7 @@ function disbleBanner(bannerId){
   })
 }
 
+//activate a banner - activated banner will be displayed at users end
 function activateBanner(bannerId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -684,6 +687,7 @@ function activateBanner(bannerId){
   })
 }
 
+//remove a banner
 function removeBanner(bannerId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -713,6 +717,7 @@ function removeBanner(bannerId){
   })
 }
 
+//delete a coupon 
 function deleteCoupon(couponId){
   Swal.fire({
     title: 'Are you sure ?',
@@ -743,29 +748,6 @@ function deleteCoupon(couponId){
 
 }
 
-
-
-
-// /* When the user clicks on the button,
-// toggle between hiding and showing the dropdown content */
-// function myFunction() {
-//   document.getElementById("myDropdown").classList.toggle("show");
-// }
-
-// // Close the dropdown menu if the user clicks outside of it
-// window.onclick = function(event) {
-//   if (!event.target.matches('.dropbtn')) {
-//     var dropdowns = document.getElementsByClassName("dropdown-content");
-//     var i;
-//     for (i = 0; i < dropdowns.length; i++) {
-//       var openDropdown = dropdowns[i];
-//       if (openDropdown.classList.contains('show')) {
-//         openDropdown.classList.remove('show');
-//       }
-//     }
-//   }
-// }
-
 //countdown for otp resend
 
 let timerOn = true;
@@ -788,9 +770,6 @@ function timer(remaining) {
     return;
   }
   document.getElementById("resend").innerHTML = "Resend the code ! ";
-  //     <span class="font-weight-bold text-color cursor" onclick="timer(60)">Resend
-  //     </span>;
-  // }
 }
 timer(30);
 
@@ -819,4 +798,4 @@ function kidValue(){
 }
 
 
-// read more user side comments
+

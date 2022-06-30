@@ -4,7 +4,7 @@ const { ObjectId } = require("mongodb");
 var objectId = require("mongodb").ObjectId;
 const moment = require("moment");
 const TrustedComms = require("twilio/lib/rest/preview/TrustedComms");
-
+//add package using callback
 module.exports = {
   addPackage: (packages, callback) => {
     console.log(packages);
@@ -16,6 +16,7 @@ module.exports = {
         callback(data.insertedId);
       });
   },
+  //getting all pacakges with details
   getAllPackages: () => {
     return new Promise(async (resolve, reject) => {
       let packages = await db
@@ -26,6 +27,7 @@ module.exports = {
       resolve(packages);
     });
   },
+  //delete a package
   deletePackage: (packageId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -36,6 +38,7 @@ module.exports = {
         });
     });
   },
+  //getting single package details
   getPackageDetails: (packageId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -46,7 +49,7 @@ module.exports = {
         });
     });
   },
-
+  //update a package from admin side
   updatePackage: (packageId, PackageDetails) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -72,6 +75,7 @@ module.exports = {
         });
     });
   },
+  //checkexpiry at pageload and admin side package view load to check for expired packages
   checkExpiry:(dateToday)=>{
     return new Promise(async(resolve,reject)=>{
       let currentDate = moment(dateToday).format("YYYY-MM-DD")
@@ -86,6 +90,7 @@ module.exports = {
     })
 
   },
+  //checked if a package is booked to verify if a user can add review
   bookedCheck:(packageDetails,userDetails)=>{
     return new Promise(async(resolve,reject)=>{
       let booked = await db.get().collection(collection.BOOKING_COLLECTION).find({"userId":objectId(userDetails),"packageId":objectId(packageDetails),booked:true}).toArray()
@@ -93,6 +98,7 @@ module.exports = {
     })
 
   },
+  //add catergory-admin side
   addCategory:(category)=>{
     return new Promise((resolve, reject) => {
       db.get()
@@ -103,6 +109,7 @@ module.exports = {
         });
     });
   },
+  //view all catergories
   getCategories: () => {
     return new Promise(async (resolve, reject) => {
       let categories = await db
@@ -113,6 +120,7 @@ module.exports = {
       resolve(categories);
     });
   },
+  //delete a single category
   deleteCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -123,6 +131,7 @@ module.exports = {
         });
     });
   },
+  //sort package into category for user view
   categorySort: () => {
     return new Promise(async (resolve, reject) => {
       let sortedCategory = await db
@@ -142,6 +151,7 @@ module.exports = {
       resolve(sortedCategory);
     });
   },
+  //hide a category from users view
   hideCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -159,6 +169,7 @@ module.exports = {
         });
     });
   },
+  //show the hidden catergory
   showCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -176,6 +187,7 @@ module.exports = {
         });
     });
   },
+  //calculating package total according to adult and kids count
   getpackageTotal: (packageId, data, userId) => {
     return new Promise(async (resolve, reject) => {
       let package = await db
@@ -209,6 +221,7 @@ module.exports = {
       }
     });
   },
+  //get all bookings
   getallBookings: () => {
     return new Promise(async (resolve, reject) => {
       let data = await db
@@ -220,6 +233,7 @@ module.exports = {
       resolve(data);
     });
   },
+  //updating booked status as true, to store in db
   updatestatus: (id, status) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -238,7 +252,7 @@ module.exports = {
         });
     });
   },
-
+  //changing booking status to cancel
   cancelStatus: (id, status) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -258,7 +272,7 @@ module.exports = {
     });
   },
 
-  //product offers
+  //view dashboard
   dashboard: () => {
     return new Promise(async (resolve, reject) => {
       let today = new Date();
@@ -334,7 +348,7 @@ module.exports = {
       resolve(data);
     });
   },
-
+  //get all reviews for dashboard
   allReviews:()=>{
     return new Promise(async(resolve,reject)=>{
       let reviews = await db.get().collection(collection.REVIEW_COLLECTION).find().sort({_id:-1}).toArray()
@@ -343,12 +357,14 @@ module.exports = {
     })
 
   },
+  //get recent bookings
   recentBookings:()=>{
     return new Promise(async(resolve,reject)=>{
       let recent = await db.get().collection(collection.BOOKING_COLLECTION).find({}).limit(5).sort({_id:-1}).toArray()
       resolve(recent)
     })
   },
+  //getting details for sales report
   salesreport: (details) => {
     return new Promise(async (resolve, reject) => {
       // let today=new Date()
@@ -429,6 +445,7 @@ module.exports = {
       resolve(data);
     });
   },
+  //get all packages for user views
   getAllPackage: () => {
     return new Promise((resolve, reject) => {
       let package = db
@@ -439,7 +456,7 @@ module.exports = {
       resolve(package);
     });
   },
-
+  //add offers for a package
   addPackageOffer: (data) => {
     return new Promise(async (resolve, reject) => {
       data.startDate = moment(data.startDate).format("YYYY/MM/DD");
@@ -465,7 +482,7 @@ module.exports = {
       }
     });
   },
-
+  //view all package offers -admin side
   getAllPackageOffers: () => {
     return new Promise((res, rej) => {
       let productoff = db
@@ -476,6 +493,7 @@ module.exports = {
       res(productoff);
     });
   },
+  //delete package offer
   deletePackageOffer: (Id) => {
     return new Promise(async (resolve, reject) => {
       let productoff = await db
@@ -512,7 +530,7 @@ module.exports = {
         })
     });
   },
-
+  //start package offer if startdate is equal to current date
   startPackageOffer: (todayDate) => {
     let proStartDate = moment(todayDate).format("YYYY/MM/DD");
     return new Promise(async (res, rej) => {
@@ -556,6 +574,8 @@ module.exports = {
       }
     });
   },
+  //end package offer if end date is less than current date
+
   endPackageOffer: (todayDate) => {
     let proendDate = moment(todayDate).format("YYYY/MM/DD");
     return new Promise(async (res, rej) => {
@@ -602,14 +622,14 @@ module.exports = {
       }
     });
   },
-
+  //view all coupons
   getAllcoupons: (userId) => {
     return new Promise(async(resolve, reject) => {
       let coupons = await db.get().collection(collection.COUPONS_COLLECTION).find().toArray()
       resolve(coupons)
     })
   },
-
+  //add coupon-admin side
   addCoupon:(couponData)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.USER_COLLECTION).update({},
@@ -626,7 +646,7 @@ module.exports = {
       })
     })
   },
-
+  //remove coupon -admin side
   removeCoupon:(couponId)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.COUPONS_COLLECTION).remove({_id:objectId(couponId)}).then(()=>{
@@ -645,7 +665,7 @@ module.exports = {
   },
 
 
-
+  //adding reviews to database
   addReview:(reviewData)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.REVIEW_COLLECTION).insertOne(reviewData).then((reviewData)=>{
@@ -653,18 +673,21 @@ module.exports = {
       })
     })
   },
+  //view all reviews
   getReviews:(packageName)=>{
     return new Promise(async(resolve,reject)=>{
       let reviews = await db.get().collection(collection.REVIEW_COLLECTION).find({packageId:packageName}).sort({_id:-1}).toArray()
       resolve(reviews)
     })
   },
+  //view all banners
   viewAllBanners:()=>{
     return new Promise(async(resolve,reject)=>{
       let banners = await db.get().collection(collection.BANNER_COLLECTION).find().toArray()
       resolve(banners)
     })
   },
+  //add banners-admin side
   addBanners:(BannerDetails)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.BANNER_COLLECTION).insertOne(BannerDetails).then((BannerDetails)=>{
@@ -672,6 +695,7 @@ module.exports = {
       })
     })
   },
+  //disable an added banner
   disableBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.BANNER_COLLECTION).updateOne({_id:objectId(bannerId)},
@@ -685,6 +709,7 @@ module.exports = {
       })
     })
   },
+  //activate a disabled banner
   activateBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.BANNER_COLLECTION).updateOne({_id:objectId(bannerId)},
@@ -698,7 +723,7 @@ module.exports = {
       })
     })
   },
-
+  //delete a banner -admin side
   deleteBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.BANNER_COLLECTION).remove({_id:objectId(bannerId)}).then((response)=>{

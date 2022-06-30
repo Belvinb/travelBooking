@@ -13,7 +13,7 @@ var instance = new Razorpay({
     key_id: 'rzp_test_oWdBPupObz1oBC',
     key_secret: 'yDWkWC8bEMABBmO5K4HoM76N',
 });
-
+//signup for users
 module.exports = {
     doSignup: (userData) => {
         return new Promise(async (resolve, reject) => {
@@ -39,6 +39,7 @@ module.exports = {
 
         })
     },
+    //user login
     doLogin: (userData) => {
         return new Promise(async (resolve, reject) => {
             let loginStatus = false
@@ -63,6 +64,7 @@ module.exports = {
             }
         })
     },
+    //view all users-admin
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
             let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
@@ -70,6 +72,7 @@ module.exports = {
         })
 
     },
+    //delete user
     deleteUser: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).remove({ _id: objectId(userId) }).then((response) => {
@@ -78,12 +81,14 @@ module.exports = {
             })
         })
     },
+    //add a user
     addUser: (user, callback) => {
         db.get().collection('user').insertOne(user).then((data) => {
             callback(data.insertedId)
 
         })
     },
+    //get user details
     getUserDetails: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(userId) }).then((user) => {
@@ -91,12 +96,14 @@ module.exports = {
             })
         })
     },
+    //get user number
     getUserNumber: (No) => {
         return new Promise(async (resolve, reject) => {
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ Mobile: No })
             resolve(user)
         })
     },
+    //update user ,email and password
     updateUser: (userId, userDetails) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION)
@@ -111,6 +118,7 @@ module.exports = {
                 })
         })
     },
+    //change user password ,user side
     changePassword: (userId, data) => {
         return new Promise(async (resolve, reject) => {
             let response = {}
@@ -141,7 +149,7 @@ module.exports = {
         })
 
     },
-
+    //block a user from admin side
     blockusers: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
@@ -153,6 +161,7 @@ module.exports = {
             })
         })
     },
+    //unblock a blocked user
     unblockusers: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
@@ -164,6 +173,7 @@ module.exports = {
             })
         })
     },
+    //update user info -user side
     updateUserInfo: (userId, userdetails) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) },
@@ -179,6 +189,7 @@ module.exports = {
             })
         })
     },
+    //adding new address -user side
     addNewAddress: (userId, address) => {
         return new Promise(async (resolve, reject) => {
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(userId) })
@@ -203,6 +214,7 @@ module.exports = {
             }
         })
     },
+    //view a single address
     getSingleAddress: (userId) => {
         return new Promise(async (resolve, reject) => {
             let user = await db.get().collection(collection.USER_COLLECTION).find({ _id: objectId(userId) }).toArray()
@@ -211,6 +223,7 @@ module.exports = {
 
 
     },
+    //delete an address
     deleteAddress: (user, addressId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(user) },
@@ -223,7 +236,7 @@ module.exports = {
             })
         })
     },
-
+    //make a address default
     makeDefault: (userId, addressId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId), "address._id": objectId(addressId) },
@@ -238,6 +251,7 @@ module.exports = {
                 })
         })
     },
+    //remove default from an address
     removeDefault: (userId, addressId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId), "address._id": objectId(addressId) },
@@ -251,7 +265,7 @@ module.exports = {
             })
         })
     },
-
+    //add a package to favorite
     addToFavs: (packageId, userId) => {
         let packageObj = {
             item: objectId(packageId),
@@ -305,6 +319,7 @@ module.exports = {
         })
 
     },
+    //view all favorite packages
     getFavPackages: (userId) => {
         return new Promise(async (resolve, reject) => {
             let userfavs = await db.get().collection(collection.USER_COLLECTION).aggregate([
@@ -324,6 +339,7 @@ module.exports = {
 
         })
     },
+    //get fav count
     getFavCount: (userId) => {
         return new Promise(async (resolve, reject) => {
             let count = 0
@@ -335,6 +351,7 @@ module.exports = {
 
         })
     },
+    //remove an item from favorites
     removeFav: (userId, favId) => {
         let favObj = {
             item: objectId(favId),
@@ -362,6 +379,7 @@ module.exports = {
 
 
     },
+    //add booking to database after user clicks checkout
     placeBooking: (order) => {
         console.log(order,'order test')
         return new Promise((resolve, reject) => {
@@ -397,6 +415,7 @@ module.exports = {
         })
 
     },
+    //generate razorpay after user selects the option
     generateRazorpay: (orderId, data) => {
         return new Promise((resolve, reject) => {
             var options = {
@@ -416,6 +435,7 @@ module.exports = {
             })
         })
     },
+    //verify if the payement is succesful from razorpay
     verifyPayment: (details) => {
         return new Promise((resolve, reject) => {
             const crypto = require('crypto')
@@ -430,7 +450,7 @@ module.exports = {
 
         })
     },
-
+    //changing booking status to booked true if the payement is succesful
     changePaymentStatus: (orderId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.BOOKING_COLLECTION)
@@ -448,7 +468,7 @@ module.exports = {
                 })
         })
     },
-
+    //remove a coupon from user ,after the user has used that coupon.
     removeCouponcode:(orderId,userId)=>{
         return new Promise(async(resolve,reject)=>{
             let order = await db.get().collection(collection.BOOKING_COLLECTION).findOne({_id:objectId(orderId)})
@@ -471,7 +491,7 @@ module.exports = {
             }   
         })
     },
-
+    //view all bookings
     getBookings: (userId) => {
         return new Promise(async (resolve, reject) => {
             let bookings = await db.get().collection(collection.BOOKING_COLLECTION).aggregate([
@@ -492,6 +512,7 @@ module.exports = {
             resolve(bookings)
         })
     },
+    //cancel a booking
     cancelBooking: (body) => {
         let orderId = body.orderId
         // let userId = body.userId
@@ -512,6 +533,7 @@ module.exports = {
             })
         })
     },
+    //cancel a razorpay
     cancelRazor: (orderId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(orderId) },
@@ -526,7 +548,7 @@ module.exports = {
         })
 
     },
-
+    //search key for all packages
     searchKey: (regex) => {
         return new Promise(async (resolve, reject) => {
             let searchResult = await db.get().collection(collection.PACKAGE_COLLECTION).find({ Name: regex }).toArray()
