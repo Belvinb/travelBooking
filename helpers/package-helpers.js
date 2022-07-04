@@ -19,12 +19,17 @@ module.exports = {
   //getting all pacakges with details
   getAllPackages: () => {
     return new Promise(async (resolve, reject) => {
-      let packages = await db
-        .get()
-        .collection(collection.PACKAGE_COLLECTION)
-        .find()
-        .toArray();
-      resolve(packages);
+      try{
+
+        let packages = await db
+          .get()
+          .collection(collection.PACKAGE_COLLECTIONs)
+          .find()
+          .toArray();
+          resolve(packages);
+      }catch(err){
+        reject(err)
+      }
     });
   },
   //delete a package

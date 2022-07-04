@@ -44,7 +44,9 @@ router.get("/admin-login", verifyAdmin, (req, res) => {
   packageHelpers.checkExpiry(today)
   packageHelpers.getAllPackages().then((packages) => {
     res.render("admin/view-packages", { admin: true, packages });
-  });
+  }).catch((error)=>{
+    res.redirect("/admin")
+  })
 });
 //admin login post
 router.post("/admin-login", (req, res) => {
@@ -54,7 +56,9 @@ router.post("/admin-login", (req, res) => {
         req.session.adminloggedIn = true;
         req.session.admin = response.admin;
         res.render("admin/view-packages", { admin: true, packages });
-      });
+      }).catch((error)=>{
+        res.render("/error",{admin:true,error})
+      })
     } else {
       req.session.loginErr = "Invalid username or password";
       res.redirect("/admin");
