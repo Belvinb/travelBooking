@@ -5,6 +5,7 @@ var packageHelpers = require("../helpers/package-helpers");
 var adminHelpers = require("../helpers/admin-helpers");
 var userHelpers = require("../helpers/user-helpers");
 const { response } = require("express");
+const { COUPONS_COLLECTION } = require("../config/collections");
 //middleware to check if the admin is logged is in or not
 const verifyAdmin = (req, res, next) => {
   if (req.session.adminloggedIn) {
@@ -73,6 +74,8 @@ router.get("/add-packages", verifyAdmin, function (req, res) {
     res.render("admin/add-packages", { admin: true, categories });
   });
 });
+
+
 //add package post
 router.post("/add-packages", (req, res) => {
   packageHelpers.addPackage(req.body, (id) => {
@@ -96,26 +99,38 @@ router.post("/add-packages", (req, res) => {
     res.redirect('/admin/add-packages')
   });
 });
+
+
 //delete package delete
 router.get("/delete-package/:id", verifyAdmin, (req, res) => {
   let packageId = req.params.id;
   packageHelpers.deletePackage(packageId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
+
+
 //edit package get
 router.get("/edit-packages/:id", verifyAdmin, async (req, res) => {
-  let packageId = req.params.id;
-  let package = await packageHelpers.getPackageDetails(packageId);
-  packageHelpers.getCategories().then((categories) => {
-    res.render("admin/edit-packages", { admin: true, package, categories });
-  });
+  try{
+    let packageId = req.params.id;
+    let package = await packageHelpers.getPackageDetails(packageId);
+    packageHelpers.getCategories().then((categories) => {
+      res.render("admin/edit-packages", { admin: true, package, categories });
+    })
+  }catch(err){
+    res.redirect("/error")
+  }
 });
+
+
 //edit package post
 router.post("/edit-packages/:id", (req, res) => {
   let id = req.params.id;
   packageHelpers.updatePackage(req.params.id, req.body).then(() => {
-    let image = req.files?.Image;
+    let imagex = req.files?.Image;
     let image2 = req.files?.Image2;
     let image3 = req.files?.Image3;
     let image4 = req.files?.Image4;
@@ -138,13 +153,16 @@ router.post("/edit-packages/:id", (req, res) => {
       res.redirect("/admin/admin-login");
 
     }
-  });
+  }).catch(()=>{
+    res.redirect("/error")
+  })
 });
 //view all expired packages
 router.get("/expired-packages",verifyAdmin,(req,res)=>{
   packageHelpers.getAllPackages().then((packages)=>{
-
     res.render("admin/expired-packages",{admin:true,packages})
+  }).catch(()=>{
+    res.redirect("/error")
   })
 })
 //package management end
@@ -206,20 +224,28 @@ router.get("/activateBanner/:id",verifyAdmin,(req,res)=>{
 router.get("/view-category", verifyAdmin, (req, res) => {
   packageHelpers.getCategories().then((categories) => {
     res.render("admin/view-categories", { admin: true, categories });
-  });
+  }).catch((err)=>{
+    res.redirect("/error")
+  })
 });
 
 //add category get
 router.get("/add-category", verifyAdmin, (req, res) => {
-  res.render("admin/add-categories", { admin: true });
-});
+  try{
+    res.render("admin/add-categorie", { admin: true });
+  }catch{
+    res.redirect("/error")
+  }
+})
 
 //add catergory post
 router.post("/add-category", (req, res) => {
   category = req.body;
   packageHelpers.addCategory(category).then(() => {
     res.redirect("./add-category");
-  });
+  }).catch((err)=>{
+    res.redirect("/error")
+  })
 });
 
 //delete catergory get
@@ -235,7 +261,9 @@ router.get("/hidecategory/:id", verifyAdmin, (req, res) => {
   let categoryId = req.params.id;
   packageHelpers.hideCategory(categoryId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
 
 //show catergory user side
@@ -243,7 +271,9 @@ router.get("/showcategory/:id", verifyAdmin, (req, res) => {
   let categoryId = req.params.id;
   packageHelpers.showCategory(categoryId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
 //catergory management end
 

@@ -461,6 +461,8 @@ function removeBooking(orderId, userId, total, paymentMethod, status) {
           if (response.cancelBooking) {
             swal.fire('Booking cancelled')
             location.reload()
+          }else{
+            swal.fire('unable to cancel booking')
           }
         }
       })
@@ -506,6 +508,8 @@ function removePackage(packageId) {
             if (alert2) {
               location.reload()
             }
+          }else{
+            swal.fire('Unable to delete package')
           }
 
         }
@@ -538,6 +542,8 @@ function removeUser(userId){
           if(response.userRemoved){
             swal.fire('User Removed')
             location.reload()
+          }else{
+            swal.fire('Error occured,unable to remove user')
           }
         }
       })
@@ -567,6 +573,8 @@ function hideCategory(categoryId){
           if(response.categoryHide){
             swal.fire('Category is Hidden')
             location.reload()
+          }else{
+            swal.fire('Error occured,unable to hide category')
           }
         }
       })
@@ -595,6 +603,8 @@ function showCategory(categoryId){
           if(response.categoryShow){
             swal.fire('Category is now visible')
             location.reload()
+          }else{
+            swal.fire('unable to make category visible')
           }
         }
       })

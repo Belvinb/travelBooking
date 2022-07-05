@@ -8,19 +8,23 @@ const TrustedComms = require("twilio/lib/rest/preview/TrustedComms");
 module.exports = {
   addPackage: (packages, callback) => {
     console.log(packages);
-    db.get()
-      .collection(collection.PACKAGE_COLLECTION)
-      .insertOne(packages)
-      .then((data) => {
-        console.log(data);
-        callback(data.insertedId);
-      })
+    try{
+
+      db.get()
+        .collection(collection.PACKAGE_COLLECTION)
+        .insertOne(packages)
+        .then((data) => {
+          console.log(data);
+          callback(data.insertedId);
+        })
+    }catch(err){
+      console.log(err)
+    }
   },
   //getting all pacakges with details
   getAllPackages: () => {
     return new Promise(async (resolve, reject) => {
       try{
-
         let packages = await db
           .get()
           .collection(collection.PACKAGE_COLLECTION)
@@ -35,94 +39,130 @@ module.exports = {
   //delete a package
   deletePackage: (packageId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.PACKAGE_COLLECTION)
-        .remove({ _id: objectId(packageId) })
-        .then((response) => {
-          resolve({ removePackage: true });
-        });
+      try{
+
+        db.get()
+          .collection(collection.PACKAGE_COLLECTION)
+          .remove({ _id: objectId(packageId) })
+          .then((response) => {
+            resolve({ removePackage: true });
+          });
+      }catch(err){
+        reject(err)
+      }
     });
   },
   //getting single package details
   getPackageDetails: (packageId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.PACKAGE_COLLECTION)
-        .findOne({ _id: objectId(packageId) })
-        .then((package) => {
-          resolve(package);
-        });
+      try{
+        db.get()
+          .collection(collection.PACKAGE_COLLECTION)
+          .findOne({ _id: objectId(packageId) })
+          .then((package) => {
+            resolve(package);
+          });
+      }catch(err){
+        console.log(err)
+      }
     });
   },
   //update a package from admin side
   updatePackage: (packageId, PackageDetails) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.PACKAGE_COLLECTION)
-        .updateOne(
-          { _id: objectId(packageId) },
-          {
-            $set: {
-              Name: PackageDetails.Name,
-              Category: PackageDetails.Category,
-              Date: PackageDetails.Date,
-              expiryDate:PackageDetails.expiryDate,
-              Description: PackageDetails.Description,
-              Itinerary: PackageDetails.Itinerary,
-              Summary: PackageDetails.Summary,
-              Price: PackageDetails.Price,
-              expired:false
-            },
-          }
-        )
-        .then((response) => {
-          resolve();
-        });
+      try{
+
+        db.get()
+          .collection(collection.PACKAGE_COLLECTION)
+          .updateOne(
+            { _id: objectId(packageId) },
+            {
+              $set: {
+                Name: PackageDetails.Name,
+                Category: PackageDetails.Category,
+                Date: PackageDetails.Date,
+                expiryDate:PackageDetails.expiryDate,
+                Description: PackageDetails.Description,
+                Itinerary: PackageDetails.Itinerary,
+                Summary: PackageDetails.Summary,
+                Price: PackageDetails.Price,
+                expired:false
+              },
+            }
+          )
+          .then((response) => {
+            resolve();
+          });
+      }catch(err){
+        console.log(err)
+      }
     });
   },
   //checkexpiry at pageload and admin side package view load to check for expired packages
   checkExpiry:(dateToday)=>{
     return new Promise(async(resolve,reject)=>{
       let currentDate = moment(dateToday).format("YYYY-MM-DD")
-      db.get().collection(collection.PACKAGE_COLLECTION).updateMany({expiryDate:{$lt:currentDate}},
-        {
-          $set:{expired:true}
-        },
-        {multi:true}
-        ).then(()=>{
-        resolve()
-      })
+      try{
+
+        db.get().collection(collection.PACKAGE_COLLECTION).updateMany({expiryDate:{$lt:currentDate}},
+          {
+            $set:{expired:true}
+          },
+          {multi:true}
+          ).then(()=>{
+          resolve()
+        })
+      }catch(err){
+        console.log(err)
+      }
     })
 
   },
-  //checked if a package is booked to verify if a user can add review
+  //check if a package is booked to verify if a user can add review
   bookedCheck:(packageDetails,userDetails)=>{
     return new Promise(async(resolve,reject)=>{
-      let booked = await db.get().collection(collection.BOOKING_COLLECTION).find({"userId":objectId(userDetails),"packageId":objectId(packageDetails),booked:true}).toArray()
-      resolve(booked)
+      try{
+
+        let booked = await db.get().collection(collection.BOOKING_COLLECTION).find({"userId":objectId(userDetails),"packageId":objectId(packageDetails),booked:true}).toArray()
+        resolve(booked)
+      }catch(err){
+        console.log(err)
+      }
     })
 
   },
+
+
   //add catergory-admin side
   addCategory:(category)=>{
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .insertOne(category)
-        .then((data) => {
-          resolve(data.insertedId);
-        });
+      try{
+
+        db.get()
+          .collection(collection.CATEGORY_COLLECTIONs)
+          .insertOne(category)
+          .then((data) => {
+            resolve(data.insertedId);
+          });
+      }catch(err){
+        reject(err)
+      }
     });
   },
   //view all catergories
   getCategories: () => {
     return new Promise(async (resolve, reject) => {
-      let categories = await db
-        .get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .find()
-        .toArray();
-      resolve(categories);
+      try{
+
+        let categories = await db
+          .get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .find()
+          .toArray();
+        resolve(categories);
+      }catch(err){
+        reject(err)
+      }
     });
   },
 
@@ -130,12 +170,17 @@ module.exports = {
   //delete a single category
   deleteCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .remove({ _id: objectId(categoryId) })
-        .then((response) => {
-          resolve({ categoryDelete: true });
-        });
+      try{
+
+        db.get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .remove({ _id: objectId(categoryId) })
+          .then((response) => {
+            resolve({ categoryDelete: true });
+          });
+      }catch(err){
+        console.log(err)
+      }
     });
   },
   //sort package into category for user view
@@ -166,37 +211,47 @@ module.exports = {
   //hide a category from users view
   hideCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .updateOne(
-          { _id: objectId(categoryId) },
-          {
-            $set: {
-              status: false,
-            },
-          }
-        )
-        .then((response) => {
-          resolve({ categoryHide: true });
-        });
+      try{
+
+        db.get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .updateOne(
+            { _id: objectId(categoryId) },
+            {
+              $set: {
+                status: false,
+              },
+            }
+          )
+          .then((response) => {
+            resolve({ categoryHide: true });
+          });
+      }catch(err){
+        reject(err)
+      }
     });
   },
   //show the hidden catergory
   showCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .updateOne(
-          { _id: objectId(categoryId) },
-          {
-            $set: {
-              status: true,
-            },
-          }
-        )
-        .then((response) => {
-          resolve({ categoryShow: true });
-        });
+      try{
+
+        db.get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .updateOne(
+            { _id: objectId(categoryId) },
+            {
+              $set: {
+                status: true,
+              },
+            }
+          )
+          .then((response) => {
+            resolve({ categoryShow: true });
+          });
+      }catch(err){
+        reject(err)
+      }
     });
   },
   //calculating package total according to adult and kids count
@@ -233,18 +288,21 @@ module.exports = {
       }
     });
   },
+
+
   //get all bookings
   getallBookings: () => {
     return new Promise(async (resolve, reject) => {
       let data = await db
         .get()
         .collection(collection.BOOKING_COLLECTION)
-        .find()
-        .sort({_id:-1})
+        .find({})
         .toArray();
       resolve(data);
     });
   },
+
+
   //updating booked status as true, to store in db
   updatestatus: (id, status) => {
     return new Promise((resolve, reject) => {
@@ -264,6 +322,8 @@ module.exports = {
         });
     });
   },
+
+
   //changing booking status to cancel
   cancelStatus: (id, status) => {
     return new Promise((resolve, reject) => {
@@ -283,6 +343,8 @@ module.exports = {
         });
     });
   },
+
+
 
   //view dashboard
   dashboard: () => {
@@ -360,15 +422,17 @@ module.exports = {
       resolve(data);
     });
   },
+
+
   //get all reviews for dashboard
   allReviews:()=>{
     return new Promise(async(resolve,reject)=>{
       let reviews = await db.get().collection(collection.REVIEW_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(reviews)
-      
     })
-
   },
+
+
   //get recent bookings
   recentBookings:()=>{
     return new Promise(async(resolve,reject)=>{
@@ -376,6 +440,8 @@ module.exports = {
       resolve(recent)
     })
   },
+
+
   //getting details for sales report
   salesreport: (details) => {
     return new Promise(async (resolve, reject) => {
@@ -457,6 +523,8 @@ module.exports = {
       resolve(data);
     });
   },
+
+
   //get all packages for user views
   getAllPackage: () => {
     return new Promise((resolve, reject) => {
@@ -468,6 +536,8 @@ module.exports = {
       resolve(package);
     });
   },
+
+
   //add offers for a package
   addPackageOffer: (data) => {
     return new Promise(async (resolve, reject) => {
@@ -494,6 +564,8 @@ module.exports = {
       }
     });
   },
+
+
   //view all package offers -admin side
   getAllPackageOffers: () => {
     return new Promise((res, rej) => {
@@ -505,6 +577,8 @@ module.exports = {
       res(productoff);
     });
   },
+
+
   //delete package offer
   deletePackageOffer: (Id) => {
     return new Promise(async (resolve, reject) => {
@@ -542,6 +616,8 @@ module.exports = {
         })
     });
   },
+
+
   //start package offer if startdate is equal to current date
   startPackageOffer: (todayDate) => {
     let proStartDate = moment(todayDate).format("YYYY/MM/DD");
@@ -586,8 +662,9 @@ module.exports = {
       }
     });
   },
-  //end package offer if end date is less than current date
 
+
+  //end package offer if end date is less than current date
   endPackageOffer: (todayDate) => {
     let proendDate = moment(todayDate).format("YYYY/MM/DD");
     return new Promise(async (res, rej) => {
@@ -634,6 +711,8 @@ module.exports = {
       }
     });
   },
+
+
   //view all coupons
   getAllcoupons: (userId) => {
     return new Promise(async(resolve, reject) => {
@@ -641,6 +720,8 @@ module.exports = {
       resolve(coupons)
     })
   },
+
+
   //add coupon-admin side
   addCoupon:(couponData)=>{
     return new Promise((resolve,reject)=>{
@@ -658,6 +739,8 @@ module.exports = {
       })
     })
   },
+
+
   //remove coupon -admin side
   removeCoupon:(couponId)=>{
     return new Promise((resolve,reject)=>{
@@ -685,6 +768,8 @@ module.exports = {
       })
     })
   },
+
+
   //view all reviews
   getReviews:(packageName)=>{
     return new Promise(async(resolve,reject)=>{
@@ -692,6 +777,8 @@ module.exports = {
       resolve(reviews)
     })
   },
+
+
   //view all banners
   viewAllBanners:()=>{
     return new Promise(async(resolve,reject)=>{
@@ -699,6 +786,8 @@ module.exports = {
       resolve(banners)
     })
   },
+
+
   //add banners-admin side
   addBanners:(BannerDetails)=>{
     return new Promise((resolve,reject)=>{
@@ -707,6 +796,8 @@ module.exports = {
       })
     })
   },
+
+
   //disable an added banner
   disableBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
@@ -721,6 +812,8 @@ module.exports = {
       })
     })
   },
+
+  
   //activate a disabled banner
   activateBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
@@ -735,6 +828,7 @@ module.exports = {
       })
     })
   },
+
   //delete a banner -admin side
   deleteBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
