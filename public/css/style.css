@@ -3585,8 +3585,10 @@ img.hover-shadow {
 /* 404 error page */
 .error-404{
   background: url("../images/404/error404.jpg");
-  background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
+  height: 600px;
 }
 
 

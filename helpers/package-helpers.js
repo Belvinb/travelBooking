@@ -14,7 +14,7 @@ module.exports = {
       .then((data) => {
         console.log(data);
         callback(data.insertedId);
-      });
+      })
   },
   //getting all pacakges with details
   getAllPackages: () => {
@@ -23,7 +23,7 @@ module.exports = {
 
         let packages = await db
           .get()
-          .collection(collection.PACKAGE_COLLECTIONs)
+          .collection(collection.PACKAGE_COLLECTION)
           .find()
           .toArray();
           resolve(packages);
@@ -125,6 +125,8 @@ module.exports = {
       resolve(categories);
     });
   },
+
+
   //delete a single category
   deleteCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
@@ -139,21 +141,26 @@ module.exports = {
   //sort package into category for user view
   categorySort: () => {
     return new Promise(async (resolve, reject) => {
-      let sortedCategory = await db
-        .get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .aggregate([
-          {
-            $lookup: {
-              from: collection.PACKAGE_COLLECTION,
-              localField: "Category",
-              foreignField: "Category",
-              as: "sortedPackages",
+      try{
+
+        let sortedCategory = await db
+          .get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .aggregate([
+            {
+              $lookup: {
+                from: collection.PACKAGE_COLLECTION,
+                localField: "Category",
+                foreignField: "Category",
+                as: "sortedPackages",
+              },
             },
-          },
-        ])
-        .toArray();
-      resolve(sortedCategory);
+          ])
+          .toArray();
+        resolve(sortedCategory);
+      }catch(err){
+        reject(err)
+      }
     });
   },
   //hide a category from users view
