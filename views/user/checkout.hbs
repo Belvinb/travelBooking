@@ -152,6 +152,7 @@
                                 {{/user}}
                             </select>
                             <p id="noOffer" style="color: red; font-size:15px"></p>
+                            <p id="offerPercentage" style="color:#00ff14; font-size:15px"></p>
                             <h2 id="rupees" style="color:#00ff14;"></h2>
                             <h1 id="demo" name="payable" style="color:#00ff14;"></h1>
                             <input type="text" value="" id="demo2" name="payable" hidden>
@@ -306,7 +307,7 @@
             document.getElementById("couponName").value = ''
             document.getElementById("noOffer").innerHTML = `please add ${offervalid} rs more to avail this offer`
         }else{
-        
+        document.getElementById("offerPercentage").innerHTML = `Coupon added - ${x}%`
         document.getElementById("demo").innerHTML = parseInt(y) - parseInt(y * (x / 100))
         document.getElementById("rupees").innerHTML = 'Rs'
         document.getElementById("totAmt").value = parseInt(y) - parseInt(y * (x / 100))
