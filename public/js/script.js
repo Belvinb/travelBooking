@@ -633,6 +633,8 @@ function deleteCategory(categoryId){
           if(response.categoryDelete){
             swal.fire('Category Deleted')
             location.reload()
+          }else{
+            swal.fire('Unable to delete category')
           }
         }
       })
@@ -749,6 +751,8 @@ function deleteCoupon(couponId){
             swal.fire("Coupon deleted Successfully")
             location.reload()
 
+          }else{
+            swal.fire("unable to remove coupon")
           }
         }
 

@@ -179,10 +179,12 @@ module.exports = {
             resolve({ categoryDelete: true });
           });
       }catch(err){
-        console.log(err)
+        reject(err)
       }
     });
   },
+
+
   //sort package into category for user view
   categorySort: () => {
     return new Promise(async (resolve, reject) => {
@@ -254,37 +256,45 @@ module.exports = {
       }
     });
   },
+
+
   //calculating package total according to adult and kids count
   getpackageTotal: (packageId, data, userId) => {
     return new Promise(async (resolve, reject) => {
-      let package = await db
-        .get()
-        .collection(collection.PACKAGE_COLLECTION)
-        .findOne({ _id: objectId(packageId) });
-      if (package) {
-        price = package.Price;
-        adultsCount = data.Adults;
-        kidsCount = data.Kids
-        persons = parseInt(adultsCount)+parseInt(kidsCount)
-        adultsTotal = parseInt(price)*parseInt(adultsCount)
-        kidsPrice = parseInt(price)-parseInt((price*(20/100)))
-        kidsTotal = kidsPrice*kidsCount
-        total = adultsTotal + kidsTotal;
-        db.get()
-          .collection(collection.USER_COLLECTION)
-          .updateOne(
-            { _id: objectId(userId) },
-            {
-              $set: {
-                totalAmount: total,
-                persons: persons,
-                travelDate: data.travelDate
-              },
-            }
-          )
-          .then((response) => {
-            resolve(response);
-          });
+      try{
+
+        let package = await db
+          .get()
+          .collection(collection.PACKAGE_COLLECTION)
+          .findOne({ _id: objectId(packageId) });
+        if (package) {
+          price = package.Price;
+          adultsCount = data.Adults;
+          kidsCount = data.Kids
+          persons = parseInt(adultsCount)+parseInt(kidsCount)
+          adultsTotal = parseInt(price)*parseInt(adultsCount)
+          kidsPrice = parseInt(price)-parseInt((price*(20/100)))
+          kidsTotal = kidsPrice*kidsCount
+          total = adultsTotal + kidsTotal;
+          db.get()
+            .collection(collection.USER_COLLECTION)
+            .updateOne(
+              { _id: objectId(userId) },
+              {
+                $set: {
+                  totalAmount: total,
+                  persons: persons,
+                  travelDate: data.travelDate
+                },
+              }
+            )
+            .then((response) => {
+              resolve(response);
+            });
+        }
+      }catch(err){
+        console.log(err)
+        reject(err)
       }
     });
   },
@@ -293,12 +303,17 @@ module.exports = {
   //get all bookings
   getallBookings: () => {
     return new Promise(async (resolve, reject) => {
-      let data = await db
-        .get()
-        .collection(collection.BOOKING_COLLECTION)
-        .find({})
-        .toArray();
-      resolve(data);
+      try{
+
+        let data = await db
+          .get()
+          .collection(collection.BOOKING_COLLECTION)
+          .find({})
+          .toArray();
+        resolve(data);
+      }catch(err){
+        console.log(err)
+      }
     });
   },
 
@@ -306,20 +321,25 @@ module.exports = {
   //updating booked status as true, to store in db
   updatestatus: (id, status) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.BOOKING_COLLECTION)
-        .updateOne(
-          { _id: objectId(id) },
-          {
-            $set: {
-              status: status,
-              booked:true
-            },
-          }
-        )
-        .then((response) => {
-          resolve(response);
-        });
+      try{
+
+        db.get()
+          .collection(collection.BOOKING_COLLECTION)
+          .updateOne(
+            { _id: objectId(id) },
+            {
+              $set: {
+                status: status,
+                booked:true
+              },
+            }
+          )
+          .then((response) => {
+            resolve(response);
+          });
+      }catch(err){
+        console.log(err)
+      }
     });
   },
 
@@ -327,20 +347,25 @@ module.exports = {
   //changing booking status to cancel
   cancelStatus: (id, status) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.BOOKING_COLLECTION)
-        .updateOne(
-          { _id: objectId(id) },
-          {
-            $set: {
-              status: status,
-              cancel: true
-            },
-          }
-        )
-        .then((response) => {
-          resolve(response);
-        });
+      try{
+
+        db.get()
+          .collection(collection.BOOKING_COLLECTION)
+          .updateOne(
+            { _id: objectId(id) },
+            {
+              $set: {
+                status: status,
+                cancel: true
+              },
+            }
+          )
+          .then((response) => {
+            resolve(response);
+          });
+      }catch(err){
+        console.log(err)
+      }
     });
   },
 
@@ -348,87 +373,99 @@ module.exports = {
 
   //view dashboard
   dashboard: () => {
-    return new Promise(async (resolve, reject) => {
-      let today = new Date();
-      let end = moment(today).format("YYYY/MM/DD");
-      // let start = moment(end).format("YYYY/MM/DD");
-      let orderSuccess = await db
-        .get()
-        .collection(collection.BOOKING_COLLECTION)
-        .find({ date: {$lte: end }, status: { $nin: ["canceled", "pending"] } })
-        .toArray();
-      let orderPending = await db
-        .get()
-        .collection(collection.BOOKING_COLLECTION)
-        .find({ date: {$lte: end }, status: "pending" })
-        .toArray();
-      let orderCancel = await db
-        .get()
-        .collection(collection.BOOKING_COLLECTION)
-        .find({ date: {$lte: end }, status: "canceled" })
-        .toArray();
-      let allUser = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .find()
-        .toArray();
-      let products = await db
-        .get()
-        .collection(collection.PACKAGE_COLLECTION)
-        .find()
-        .toArray();
-      let orderTotal = await db
-        .get()
-        .collection(collection.BOOKING_COLLECTION)
-        .find({ date: {$lte: end } })
-        .toArray();
-      let orderSuccessLength = orderSuccess.length
-      let orderPendingLength = orderPending.length;
-      let orderCancelLength = orderCancel.length;
-      let allUserLength = allUser.length;
-      let productsLength = products.length;
+    try{
 
-      let orderTotalLength = orderTotal.length;
-      let orderFailLength = orderTotalLength - orderSuccessLength;
-      let total = 0;
-      let paypal = 0;
-      let razorpay = 0;
-      let COD = 0;
-      for (let i = 0; i < orderSuccessLength; i++) {
-        total = total + parseInt(orderSuccess[i].totalAmount);
-        if (orderSuccess[i].paymentMethod == "PAYPAL") {
-          paypal++;
-        } else if (orderSuccess[i].paymentMethod == "RAZORPAY") {
-          razorpay++;
-        } else {
-          COD++;
-        }
-      }
-      var data = {
-        end: end,
-        totalOrders: orderTotalLength,
-        successOrders: orderSuccessLength,
-        pendingOrder: orderPendingLength,
-        cancelOrder: orderCancelLength,
-        totalUser: allUserLength,
-        totalProducts: productsLength,
-        faildOrders: orderFailLength,
-        totalSales: total,
-        cod: COD,
-        paypal: paypal,
-        razorpay: razorpay
-        //    currentOrders: orderSuccess
-      };
-      resolve(data);
-    });
+      return new Promise(async (resolve, reject) => {
+  
+          let today = new Date();
+          let end = moment(today).format("YYYY/MM/DD");
+          // let start = moment(end).format("YYYY/MM/DD");
+          let orderSuccess = await db
+            .get()
+            .collection(collection.BOOKING_COLLECTION)
+            .find({ date: {$lte: end }, status: { $nin: ["canceled", "pending"] } })
+            .toArray();
+          let orderPending = await db
+            .get()
+            .collection(collection.BOOKING_COLLECTION)
+            .find({ date: {$lte: end }, status: "pending" })
+            .toArray();
+          let orderCancel = await db
+            .get()
+            .collection(collection.BOOKING_COLLECTION)
+            .find({ date: {$lte: end }, status: "canceled" })
+            .toArray();
+          let allUser = await db
+            .get()
+            .collection(collection.USER_COLLECTION)
+            .find()
+            .toArray();
+          let products = await db
+            .get()
+            .collection(collection.PACKAGE_COLLECTION)
+            .find()
+            .toArray();
+          let orderTotal = await db
+            .get()
+            .collection(collection.BOOKING_COLLECTION)
+            .find({ date: {$lte: end } })
+            .toArray();
+          let orderSuccessLength = orderSuccess.length
+          let orderPendingLength = orderPending.length;
+          let orderCancelLength = orderCancel.length;
+          let allUserLength = allUser.length;
+          let productsLength = products.length;
+    
+          let orderTotalLength = orderTotal.length;
+          let orderFailLength = orderTotalLength - orderSuccessLength;
+          let total = 0;
+          let paypal = 0;
+          let razorpay = 0;
+          let COD = 0;
+          for (let i = 0; i < orderSuccessLength; i++) {
+            total = total + parseInt(orderSuccess[i].totalAmount);
+            if (orderSuccess[i].paymentMethod == "PAYPAL") {
+              paypal++;
+            } else if (orderSuccess[i].paymentMethod == "RAZORPAY") {
+              razorpay++;
+            } else {
+              COD++;
+            }
+          }
+          var data = {
+            end: end,
+            totalOrders: orderTotalLength,
+            successOrders: orderSuccessLength,
+            pendingOrder: orderPendingLength,
+            cancelOrder: orderCancelLength,
+            totalUser: allUserLength,
+            totalProducts: productsLength,
+            faildOrders: orderFailLength,
+            totalSales: total,
+            cod: COD,
+            paypal: paypal,
+            razorpay: razorpay
+            //    currentOrders: orderSuccess
+          };
+          resolve(data);
+      });
+    }catch(err){
+      console.log(err)
+    }
   },
 
 
   //get all reviews for dashboard
   allReviews:()=>{
     return new Promise(async(resolve,reject)=>{
-      let reviews = await db.get().collection(collection.REVIEW_COLLECTION).find().sort({_id:-1}).toArray()
-      resolve(reviews)
+      try{
+
+        let reviews = await db.get().collection(collection.REVIEW_COLLECTION).find().sort({_id:-1}).toArray()
+        resolve(reviews)
+      }catch(err){
+        reject(err)
+        console.log(err)
+      }
     })
   },
 
@@ -436,8 +473,14 @@ module.exports = {
   //get recent bookings
   recentBookings:()=>{
     return new Promise(async(resolve,reject)=>{
-      let recent = await db.get().collection(collection.BOOKING_COLLECTION).find({}).limit(5).sort({_id:-1}).toArray()
-      resolve(recent)
+      try{
+
+        let recent = await db.get().collection(collection.BOOKING_COLLECTION).find({}).limit(5).sort({_id:-1}).toArray()
+        resolve(recent)
+      }catch(err){
+        reject(err)
+        console.log(err)
+      }
     })
   },
 
@@ -744,16 +787,21 @@ module.exports = {
   //remove coupon -admin side
   removeCoupon:(couponId)=>{
     return new Promise((resolve,reject)=>{
-      db.get().collection(collection.COUPONS_COLLECTION).remove({_id:objectId(couponId)}).then(()=>{
-        resolve({couponDeleted:true})
-      })
-      db.get().collection(collection.USER_COLLECTION).updateMany({},
-        
-        {
-          $pull:{'coupons':{'_id':objectId(couponId)}}
-        }).then(()=>{
-          resolve()
+      try{
+
+        db.get().collection(collection.COUPONS_COLLECTION).remove({_id:objectId(couponId)}).then(()=>{
+          resolve({couponDeleted:true})
         })
+        db.get().collection(collection.USER_COLLECTION).updateMany({},
+          
+          {
+            $pull:{'coupons':{'_id':objectId(couponId)}}
+          }).then(()=>{
+            resolve()
+          })
+      }catch(err){
+        reject(err)
+      }
       
     })
 

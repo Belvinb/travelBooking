@@ -75,10 +75,14 @@ module.exports = {
     //delete user
     deleteUser: (userId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.USER_COLLECTION).remove({ _id: objectId(userId) }).then((response) => {
-                resolve({ userRemoved: true });
+            try{
 
-            })
+                db.get().collection(collection.USER_COLLECTION).remove({ _id: objectId(userId) }).then((response) => {
+                    resolve({ userRemoved: true });
+                })
+            }catch(err){
+                reject(err)
+            }
         })
     },
     //add a user

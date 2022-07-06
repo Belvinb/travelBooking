@@ -376,17 +376,13 @@ router.post('/updateUserPwd/:id', (req, res) => {
         req.session.currentPwdErr = true
         req.session.currentPwdErr = "current password is wrong"
         res.redirect('/my-profile')
-
-
       }
     })
   } else {
     req.session.newPwdErr = true
     req.session.newPwdErr = "The passwords does not match"
     res.redirect('/my-profile')
-
   }
-
 
 })
 

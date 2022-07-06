@@ -49,6 +49,7 @@ router.get("/admin-login", verifyAdmin, (req, res) => {
     res.redirect("/admin")
   })
 });
+
 //admin login post
 router.post("/admin-login", (req, res) => {
   adminHelpers.adminLogin(req.body).then((response) => {
@@ -232,7 +233,7 @@ router.get("/view-category", verifyAdmin, (req, res) => {
 //add category get
 router.get("/add-category", verifyAdmin, (req, res) => {
   try{
-    res.render("admin/add-categorie", { admin: true });
+    res.render("admin/add-categories", { admin: true });
   }catch{
     res.redirect("/error")
   }
@@ -251,9 +252,15 @@ router.post("/add-category", (req, res) => {
 //delete catergory get
 router.get("/delete-category/:id", verifyAdmin, (req, res) => {
   let categoryId = req.params.id;
-  packageHelpers.deleteCategory(categoryId).then((response) => {
-    res.json(response)
-  });
+  try{
+    packageHelpers.deleteCategory(categoryId).then((response) => {
+      res.json(response)
+    }).catch((err)=>{
+      res.json(err)
+    })
+  }catch{
+    res.redirect('/error')
+  }
 });
 
 //hide catergory get
@@ -282,7 +289,9 @@ router.get("/showcategory/:id", verifyAdmin, (req, res) => {
 router.get("/view-user", verifyAdmin, function (req, res) {
   userHelpers.getAllUsers().then((users) => {
     res.render("admin/view-user", { users, admin: true });
-  });
+  }).catch(()=>{
+    res.redirect('/error')
+  })
 });
 
 //delete user
@@ -290,7 +299,9 @@ router.get("/delete-user/:id", verifyAdmin, (req, res) => {
   let userId = req.params.id;
   userHelpers.deleteUser(userId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
 
 //add user get
@@ -325,7 +336,9 @@ router.get("/blockuser/:id", verifyAdmin, (req, res) => {
   let userId = req.params.id;
   userHelpers.blockusers(userId).then((response) => {
     res.redirect("/admin/view-user");
-  });
+  }).catch(()=>{
+    res.redirect("/error")
+  })
 });
 
 //unblock user
@@ -333,47 +346,68 @@ router.get("/unblockuser/:id", verifyAdmin, (req, res) => {
   let userId = req.params.id;
   userHelpers.unblockusers(userId).then((response) => {
     res.redirect("/admin/view-user");
-  });
+  }).catch(()=>{
+    res.redirect("/error")
+  })
 });
 
 //view bookings admin side
 router.get("/view-booking", verifyAdmin, (req, res) => {
-  packageHelpers.getallBookings().then((bookings) => {
-    res.render("admin/view-bookings", { admin: true, bookings });
-  });
+  try{
+    packageHelpers.getallBookings().then((bookings) => {
+      res.render("admin/view-bookings", { admin: true, bookings });
+    });
+  }catch{
+    res.redirect("/error")
+  }
 });
 
 //change booking status by admin
 router.get("/placedBooking", verifyAdmin, (req, res) => {
-  let status = req.query.name;
-  if (status == "placed") {
-    packageHelpers.updatestatus(req.query.id, status).then((resp) => {
-      res.redirect("/admin/view-booking");
-    });
-  } else if (status == "cancelled") {
-    packageHelpers.cancelStatus(req.query.id, status).then((resp) => {
-      res.redirect("/admin/view-booking");
-    });
-  } else if (status == "completed") {
-    packageHelpers.updatestatus(req.query.id, status).then((resp) => {
-      res.redirect("/admin/view-booking");
-    });
+  try{
+
+    let status = req.query.name;
+    if (status == "placed") {
+      packageHelpers.updatestatus(req.query.id, status).then((resp) => {
+        res.redirect("/admin/view-booking");
+      });
+    } else if (status == "cancelled") {
+      packageHelpers.cancelStatus(req.query.id, status).then((resp) => {
+        res.redirect("/admin/view-booking");
+      });
+    } else if (status == "completed") {
+      packageHelpers.updatestatus(req.query.id, status).then((resp) => {
+        res.redirect("/admin/view-booking");
+      });
+    }
+  }catch{
+    res.redirect('/error')
   }
 });
 
 //view offers
 router.get("/packageOffer-view", verifyAdmin, (req, res) => {
-  packageHelpers.getAllPackageOffers().then((proOffer) => {
-    res.render("admin/packageOffer-view", { admin: true, proOffer });
-  });
+  try{
+
+    packageHelpers.getAllPackageOffers().then((proOffer) => {
+      res.render("admin/packageOffer-view", { admin: true, proOffer });
+    });
+  }catch{
+    res.redirect("/error")
+  }
 });
 
 //add package offers get
 router.get("/packageOffer-add", verifyAdmin, (req, res) => {
-  packageHelpers.getAllPackage().then((packages) => {
-    res.render("admin/packageOffer-add", { admin: true, packages,'offerError':req.session.proOfferExist });
-    req.session.proOfferExist = false
-  });
+  try{
+
+    packageHelpers.getAllPackage().then((packages) => {
+      res.render("admin/packageOffer-add", { admin: true, packages,'offerError':req.session.proOfferExist });
+      req.session.proOfferExist = false
+    });
+  }catch{
+    res.redirect('/error')
+  }
 });
 
 //add package offers post
@@ -427,43 +461,67 @@ router.post("/removeCoupon/:id",verifyAdmin,(req,res)=>{
   let couponId = req.params.id
   packageHelpers.removeCoupon(couponId).then((response)=>{
     res.json(response)
+  }).catch((err)=>{
+    res.json(err)
   })
 })
 
 //get sales report
 router.get('/salesReport',(req,res)=>{
-  packageHelpers.getallBookings().then((bookings)=>{
-    packageHelpers.dashboard().then((data)=>{
-      res.render('./admin/salesReport',{admin:true,bookings,data})
+  try{
+
+    packageHelpers.getallBookings().then((bookings)=>{
+      packageHelpers.dashboard().then((data)=>{
+        res.render('./admin/salesReport',{admin:true,bookings,data})
+      })
     })
-  })
+  }catch{
+    res.redirect('/error')
+  }
 })
 
 //sales report post
 router.post('/salesReport', (req, res) => {
-  packageHelpers.getallBookings().then((bookings) => {
-    packageHelpers.salesreport(req.body).then((data) => {
-      res.render('./admin/salesReport', { admin: true, bookings, data })
+  try{
+
+    packageHelpers.getallBookings().then((bookings) => {
+      packageHelpers.salesreport(req.body).then((data) => {
+        res.render('./admin/salesReport', { admin: true, bookings, data })
+      })
     })
-  })
+  }catch{
+    res.redirect('/error')
+  }
 })
 
 //view dashboard
 router.get('/dashboard', (req, res) => {
+  try{
     packageHelpers.dashboard().then((data) => {
       packageHelpers.allReviews().then((reviews)=>{
         packageHelpers.recentBookings().then((recent)=>{
           res.render('admin/dashboard', { admin: true, data,reviews,recent })
         })
       })
-    }) 
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }catch(err){
+    console.log(err)
+    res.redirect('/error')
+  }
 })
 
 //logout
 router.get("/logout", (req, res) => {
-  req.session.adminloggedIn = false;
-  req.session.admin = null;
-  res.redirect("/admin");
+  try{
+
+    req.session.adminloggedIn = false;
+    req.session.admin = null;
+    res.redirect("/admin");
+  }catch{
+    res.redirect('/error')
+  }
 });
 
 module.exports = router;
