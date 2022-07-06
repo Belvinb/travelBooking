@@ -42,14 +42,18 @@ router.get('/', async function (req, res) {
   if (req.session.user) {
     favCount = await userHelpers.getFavCount(req.session.user._id)
   }
-  let categories = await packageHelpers.getCategories()
-  let packages = await packageHelpers.categorySort()
-  let banner = await packageHelpers.viewAllBanners()
-  packageHelpers.startPackageOffer(today)
-  packageHelpers.checkExpiry(today)
-  packageHelpers.endPackageOffer(today)
+  try{
 
-  res.render('./user/user-view-packages', { admin: false, packages, categories, user, favCount,banner })
+    let packages = await packageHelpers.categorySort()
+    let banner = await packageHelpers.viewAllBanners()
+    packageHelpers.startPackageOffer(today)
+    packageHelpers.checkExpiry(today)
+    packageHelpers.endPackageOffer(today)
+  
+    res.render('./user/user-view-packages', { admin: false, packages, user, favCount,banner })
+  }catch{
+    res.render("/error")
+  }
 
 })
 // search result page
@@ -372,17 +376,13 @@ router.post('/updateUserPwd/:id', (req, res) => {
         req.session.currentPwdErr = true
         req.session.currentPwdErr = "current password is wrong"
         res.redirect('/my-profile')
-
-
       }
     })
   } else {
     req.session.newPwdErr = true
     req.session.newPwdErr = "The passwords does not match"
     res.redirect('/my-profile')
-
   }
-
 
 })
 

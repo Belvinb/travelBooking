@@ -3582,6 +3582,15 @@ img.hover-shadow {
   display: none;
 }
 
+/* 404 error page */
+.error-404{
+  background: url("../images/404/error404.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 600px;
+}
+
 
 
 

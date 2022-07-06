@@ -5,6 +5,7 @@ var packageHelpers = require("../helpers/package-helpers");
 var adminHelpers = require("../helpers/admin-helpers");
 var userHelpers = require("../helpers/user-helpers");
 const { response } = require("express");
+const { COUPONS_COLLECTION } = require("../config/collections");
 //middleware to check if the admin is logged is in or not
 const verifyAdmin = (req, res, next) => {
   if (req.session.adminloggedIn) {
@@ -44,8 +45,11 @@ router.get("/admin-login", verifyAdmin, (req, res) => {
   packageHelpers.checkExpiry(today)
   packageHelpers.getAllPackages().then((packages) => {
     res.render("admin/view-packages", { admin: true, packages });
-  });
+  }).catch((error)=>{
+    res.redirect("/admin")
+  })
 });
+
 //admin login post
 router.post("/admin-login", (req, res) => {
   adminHelpers.adminLogin(req.body).then((response) => {
@@ -54,7 +58,9 @@ router.post("/admin-login", (req, res) => {
         req.session.adminloggedIn = true;
         req.session.admin = response.admin;
         res.render("admin/view-packages", { admin: true, packages });
-      });
+      }).catch((error)=>{
+        res.render("/error",{admin:true,error})
+      })
     } else {
       req.session.loginErr = "Invalid username or password";
       res.redirect("/admin");
@@ -69,6 +75,8 @@ router.get("/add-packages", verifyAdmin, function (req, res) {
     res.render("admin/add-packages", { admin: true, categories });
   });
 });
+
+
 //add package post
 router.post("/add-packages", (req, res) => {
   packageHelpers.addPackage(req.body, (id) => {
@@ -92,26 +100,38 @@ router.post("/add-packages", (req, res) => {
     res.redirect('/admin/add-packages')
   });
 });
+
+
 //delete package delete
 router.get("/delete-package/:id", verifyAdmin, (req, res) => {
   let packageId = req.params.id;
   packageHelpers.deletePackage(packageId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
+
+
 //edit package get
 router.get("/edit-packages/:id", verifyAdmin, async (req, res) => {
-  let packageId = req.params.id;
-  let package = await packageHelpers.getPackageDetails(packageId);
-  packageHelpers.getCategories().then((categories) => {
-    res.render("admin/edit-packages", { admin: true, package, categories });
-  });
+  try{
+    let packageId = req.params.id;
+    let package = await packageHelpers.getPackageDetails(packageId);
+    packageHelpers.getCategories().then((categories) => {
+      res.render("admin/edit-packages", { admin: true, package, categories });
+    })
+  }catch(err){
+    res.redirect("/error")
+  }
 });
+
+
 //edit package post
 router.post("/edit-packages/:id", (req, res) => {
   let id = req.params.id;
   packageHelpers.updatePackage(req.params.id, req.body).then(() => {
-    let image = req.files?.Image;
+    let imagex = req.files?.Image;
     let image2 = req.files?.Image2;
     let image3 = req.files?.Image3;
     let image4 = req.files?.Image4;
@@ -134,13 +154,16 @@ router.post("/edit-packages/:id", (req, res) => {
       res.redirect("/admin/admin-login");
 
     }
-  });
+  }).catch(()=>{
+    res.redirect("/error")
+  })
 });
 //view all expired packages
 router.get("/expired-packages",verifyAdmin,(req,res)=>{
   packageHelpers.getAllPackages().then((packages)=>{
-
     res.render("admin/expired-packages",{admin:true,packages})
+  }).catch(()=>{
+    res.redirect("/error")
   })
 })
 //package management end
@@ -202,28 +225,42 @@ router.get("/activateBanner/:id",verifyAdmin,(req,res)=>{
 router.get("/view-category", verifyAdmin, (req, res) => {
   packageHelpers.getCategories().then((categories) => {
     res.render("admin/view-categories", { admin: true, categories });
-  });
+  }).catch((err)=>{
+    res.redirect("/error")
+  })
 });
 
 //add category get
 router.get("/add-category", verifyAdmin, (req, res) => {
-  res.render("admin/add-categories", { admin: true });
-});
+  try{
+    res.render("admin/add-categories", { admin: true });
+  }catch{
+    res.redirect("/error")
+  }
+})
 
 //add catergory post
 router.post("/add-category", (req, res) => {
   category = req.body;
   packageHelpers.addCategory(category).then(() => {
     res.redirect("./add-category");
-  });
+  }).catch((err)=>{
+    res.redirect("/error")
+  })
 });
 
 //delete catergory get
 router.get("/delete-category/:id", verifyAdmin, (req, res) => {
   let categoryId = req.params.id;
-  packageHelpers.deleteCategory(categoryId).then((response) => {
-    res.json(response)
-  });
+  try{
+    packageHelpers.deleteCategory(categoryId).then((response) => {
+      res.json(response)
+    }).catch((err)=>{
+      res.json(err)
+    })
+  }catch{
+    res.redirect('/error')
+  }
 });
 
 //hide catergory get
@@ -231,7 +268,9 @@ router.get("/hidecategory/:id", verifyAdmin, (req, res) => {
   let categoryId = req.params.id;
   packageHelpers.hideCategory(categoryId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
 
 //show catergory user side
@@ -239,7 +278,9 @@ router.get("/showcategory/:id", verifyAdmin, (req, res) => {
   let categoryId = req.params.id;
   packageHelpers.showCategory(categoryId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
 //catergory management end
 
@@ -248,7 +289,9 @@ router.get("/showcategory/:id", verifyAdmin, (req, res) => {
 router.get("/view-user", verifyAdmin, function (req, res) {
   userHelpers.getAllUsers().then((users) => {
     res.render("admin/view-user", { users, admin: true });
-  });
+  }).catch(()=>{
+    res.redirect('/error')
+  })
 });
 
 //delete user
@@ -256,7 +299,9 @@ router.get("/delete-user/:id", verifyAdmin, (req, res) => {
   let userId = req.params.id;
   userHelpers.deleteUser(userId).then((response) => {
     res.json(response)
-  });
+  }).catch((err)=>{
+    res.json(err)
+  })
 });
 
 //add user get
@@ -291,7 +336,9 @@ router.get("/blockuser/:id", verifyAdmin, (req, res) => {
   let userId = req.params.id;
   userHelpers.blockusers(userId).then((response) => {
     res.redirect("/admin/view-user");
-  });
+  }).catch(()=>{
+    res.redirect("/error")
+  })
 });
 
 //unblock user
@@ -299,47 +346,68 @@ router.get("/unblockuser/:id", verifyAdmin, (req, res) => {
   let userId = req.params.id;
   userHelpers.unblockusers(userId).then((response) => {
     res.redirect("/admin/view-user");
-  });
+  }).catch(()=>{
+    res.redirect("/error")
+  })
 });
 
 //view bookings admin side
 router.get("/view-booking", verifyAdmin, (req, res) => {
-  packageHelpers.getallBookings().then((bookings) => {
-    res.render("admin/view-bookings", { admin: true, bookings });
-  });
+  try{
+    packageHelpers.getallBookings().then((bookings) => {
+      res.render("admin/view-bookings", { admin: true, bookings });
+    });
+  }catch{
+    res.redirect("/error")
+  }
 });
 
 //change booking status by admin
 router.get("/placedBooking", verifyAdmin, (req, res) => {
-  let status = req.query.name;
-  if (status == "placed") {
-    packageHelpers.updatestatus(req.query.id, status).then((resp) => {
-      res.redirect("/admin/view-booking");
-    });
-  } else if (status == "cancelled") {
-    packageHelpers.cancelStatus(req.query.id, status).then((resp) => {
-      res.redirect("/admin/view-booking");
-    });
-  } else if (status == "completed") {
-    packageHelpers.updatestatus(req.query.id, status).then((resp) => {
-      res.redirect("/admin/view-booking");
-    });
+  try{
+
+    let status = req.query.name;
+    if (status == "placed") {
+      packageHelpers.updatestatus(req.query.id, status).then((resp) => {
+        res.redirect("/admin/view-booking");
+      });
+    } else if (status == "cancelled") {
+      packageHelpers.cancelStatus(req.query.id, status).then((resp) => {
+        res.redirect("/admin/view-booking");
+      });
+    } else if (status == "completed") {
+      packageHelpers.updatestatus(req.query.id, status).then((resp) => {
+        res.redirect("/admin/view-booking");
+      });
+    }
+  }catch{
+    res.redirect('/error')
   }
 });
 
 //view offers
 router.get("/packageOffer-view", verifyAdmin, (req, res) => {
-  packageHelpers.getAllPackageOffers().then((proOffer) => {
-    res.render("admin/packageOffer-view", { admin: true, proOffer });
-  });
+  try{
+
+    packageHelpers.getAllPackageOffers().then((proOffer) => {
+      res.render("admin/packageOffer-view", { admin: true, proOffer });
+    });
+  }catch{
+    res.redirect("/error")
+  }
 });
 
 //add package offers get
 router.get("/packageOffer-add", verifyAdmin, (req, res) => {
-  packageHelpers.getAllPackage().then((packages) => {
-    res.render("admin/packageOffer-add", { admin: true, packages,'offerError':req.session.proOfferExist });
-    req.session.proOfferExist = false
-  });
+  try{
+
+    packageHelpers.getAllPackage().then((packages) => {
+      res.render("admin/packageOffer-add", { admin: true, packages,'offerError':req.session.proOfferExist });
+      req.session.proOfferExist = false
+    });
+  }catch{
+    res.redirect('/error')
+  }
 });
 
 //add package offers post
@@ -393,43 +461,67 @@ router.post("/removeCoupon/:id",verifyAdmin,(req,res)=>{
   let couponId = req.params.id
   packageHelpers.removeCoupon(couponId).then((response)=>{
     res.json(response)
+  }).catch((err)=>{
+    res.json(err)
   })
 })
 
 //get sales report
 router.get('/salesReport',(req,res)=>{
-  packageHelpers.getallBookings().then((bookings)=>{
-    packageHelpers.dashboard().then((data)=>{
-      res.render('./admin/salesReport',{admin:true,bookings,data})
+  try{
+
+    packageHelpers.getallBookings().then((bookings)=>{
+      packageHelpers.dashboard().then((data)=>{
+        res.render('./admin/salesReport',{admin:true,bookings,data})
+      })
     })
-  })
+  }catch{
+    res.redirect('/error')
+  }
 })
 
 //sales report post
 router.post('/salesReport', (req, res) => {
-  packageHelpers.getallBookings().then((bookings) => {
-    packageHelpers.salesreport(req.body).then((data) => {
-      res.render('./admin/salesReport', { admin: true, bookings, data })
+  try{
+
+    packageHelpers.getallBookings().then((bookings) => {
+      packageHelpers.salesreport(req.body).then((data) => {
+        res.render('./admin/salesReport', { admin: true, bookings, data })
+      })
     })
-  })
+  }catch{
+    res.redirect('/error')
+  }
 })
 
 //view dashboard
 router.get('/dashboard', (req, res) => {
+  try{
     packageHelpers.dashboard().then((data) => {
       packageHelpers.allReviews().then((reviews)=>{
         packageHelpers.recentBookings().then((recent)=>{
           res.render('admin/dashboard', { admin: true, data,reviews,recent })
         })
       })
-    }) 
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }catch(err){
+    console.log(err)
+    res.redirect('/error')
+  }
 })
 
 //logout
 router.get("/logout", (req, res) => {
-  req.session.adminloggedIn = false;
-  req.session.admin = null;
-  res.redirect("/admin");
+  try{
+
+    req.session.adminloggedIn = false;
+    req.session.admin = null;
+    res.redirect("/admin");
+  }catch{
+    res.redirect('/error')
+  }
 });
 
 module.exports = router;
