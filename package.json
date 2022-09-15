@@ -29,6 +29,6 @@
     "razorpay": "^2.8.1",
     "sweetalert2": "^11.4.13",
     "tinymce": "^6.0.2",
-    "twilio": "^3.76.1"
+    "twilio": "^3.78.0"
   }
 }
